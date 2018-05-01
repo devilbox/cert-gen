@@ -1,0 +1,291 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+NAME="cert-gen"
+
+# Generate default options
+DEF_KEYSIZE=2048
+DEF_DAYS=3650
+# Subject default options
+DEF_COUNTRY=
+DEF_STATE=
+DEF_CITY=
+DEF_ORG=
+DEF_UNIT=
+DEF_CN=
+DEF_EMAIL=
+
+# v3 subject alt names
+DEF_ALT_NAME=
+
+# Verbosity
+DEF_VERBOSE=
+
+
+print_version() {
+	echo "${NAME} v0.1"
+}
+print_help() {
+	echo "USAGE: ${NAME} -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>"
+	echo "       ${NAME} --help"
+	echo "       ${NAME} --version"
+	echo
+	echo "Required arguments"
+	echo "  -n CN       Common Name"
+	echo
+	echo "Optional arguments"
+	echo "  -k int      Key size in bits"
+	echo "  -d int      Validity in days"
+	echo "  -c C        Subject two letter country name (C)"
+	echo "  -s ST       Subject state name (ST)"
+	echo "  -l L        Subject location (L)"
+	echo "  -o O        Subject organization (O)"
+	echo "  -u OU       Subject organizational unit (OU)"
+	echo "  -e Email    Subject email (emailAddress)"
+	echo "  -a names    Comma separated list of alt names (subjectAltName)"
+	echo "  -v          Verbose output"
+	echo
+	echo "Required parameter"
+	echo "  <ca-key>    Path to existing CA key file"
+	echo "  <ca-crt>    Path to existing CA crt file"
+	echo "  <key>       Path to output certificate key file"
+	echo "  <csr>       Path to output certificate csr file"
+	echo "  <crt>       Path to output certificate crt file"
+}
+
+
+################################################################################
+# Entrypoint: Parse cmd args
+################################################################################
+
+# Get options
+while [ ${#} -gt 0 ]; do
+	case "${1}" in
+		# ---- Help / version
+		--version)
+			print_version
+			exit
+			;;
+		--help)
+			print_help
+			exit
+			;;
+		-v)
+			DEF_VERBOSE=1
+			shift
+			;;
+		# ---- Options
+		-k)
+			shift
+			DEF_KEYSIZE="${1}"
+			shift
+			;;
+		-d)
+			shift
+			DEF_DAYS="${1}"
+			shift
+			;;
+		-c)
+			shift
+			DEF_COUNTRY="${1}"
+			shift
+			;;
+		-s)
+			shift
+			DEF_STATE="${1}"
+			shift
+			;;
+		-l)
+			shift
+			DEF_CITY="${1}"
+			shift
+			;;
+		-o)
+			shift
+			DEF_ORG="${1}"
+			shift
+			;;
+		-u)
+			shift
+			DEF_UNIT="${1}"
+			shift
+			;;
+		-n)
+			shift
+			DEF_CN="${1}"
+			shift
+			;;
+		-e)
+			shift
+			DEF_EMAIL="${1}"
+			shift
+			;;
+		-a)
+			shift
+			DEF_ALT_NAME="${1}"
+			shift
+			;;
+		# ---- Stop here
+		--) # End of all options
+			shift
+			break
+			;;
+		-*) # Unknown option
+			>&2 echo "Error: Unknown option: ${1}"
+			exit 1
+			;;
+		*)  # No more options
+			break
+			;;
+	esac
+done
+
+
+################################################################################
+# Entrypoint: Validate cmd args
+################################################################################
+
+if [ -z "${DEF_CN}" ]; then
+	>&2 echo "Error: -n is required. See --help for help."
+	exit 1
+fi
+
+if [ "${#}" -lt "5" ]; then
+	>&2 echo "Error: <ca-key> <ca-crt> <key> <csr> and <crt> are required. See --help for help."
+	exit 1
+fi
+
+CA_KEY_FILE="${1}"
+CA_CRT_FILE="${2}"
+KEY_FILE="${3}"
+CSR_FILE="${4}"
+CRT_FILE="${5}"
+
+if [ ! -f "${CA_KEY_FILE}" ]; then
+	>&2 echo "Error: <ca-key> file does not exist in: ${CA_KEY_FILE}"
+	exit 1
+fi
+if [ ! -f "${CA_CRT_FILE}" ]; then
+	>&2 echo "Error: <ca-crt> file does not exist in: ${CA_CRT_FILE}"
+	exit 1
+fi
+
+
+
+
+################################################################################
+# Entrypoint: Execute
+################################################################################
+
+###
+### Build subject
+###
+SUBJECT=
+if [ -n "${DEF_COUNTRY}" ]; then
+	SUBJECT="${SUBJECT}/C=${DEF_COUNTRY}"
+fi
+if [ -n "${DEF_STATE}" ]; then
+	SUBJECT="${SUBJECT}/ST=${DEF_STATE}"
+fi
+if [ -n "${DEF_CITY}" ]; then
+	SUBJECT="${SUBJECT}/L=${DEF_CITY}"
+fi
+if [ -n "${DEF_ORG}" ]; then
+	SUBJECT="${SUBJECT}/O=${DEF_ORG}"
+fi
+if [ -n "${DEF_UNIT}" ]; then
+	SUBJECT="${SUBJECT}/OU=${DEF_UNIT}"
+fi
+if [ -n "${DEF_CN}" ]; then
+	SUBJECT="${SUBJECT}/CN=${DEF_CN}"
+fi
+if [ -n "${DEF_EMAIL}" ]; then
+	SUBJECT="${SUBJECT}/emailAddress=${DEF_EMAIL}"
+fi
+
+# Create subject altnames
+ALT_NAMES="DNS.1:${DEF_CN}"
+i=2
+if [ -n "${DEF_ALT_NAME}" ]; then
+	for cn in ${DEF_ALT_NAME//,/ }; do
+		ALT_NAMES="${ALT_NAMES},DNS.${i}:${cn}"
+	done
+fi
+
+###
+### Build commands
+###
+
+###
+### 1. Key and Signing Request
+###
+
+# Command
+cmd=" openssl req \
+  -newkey rsa:${DEF_KEYSIZE} \
+  -nodes \
+  -extensions v3_req \
+  -keyout ${KEY_FILE} \
+  -subj '${SUBJECT}' \
+  -out ${CSR_FILE}"
+
+# Trim newlines/whitespaces
+cmd="$( echo "${cmd}" | tr -s " " )"
+
+# Debug
+if [ "${DEF_VERBOSE}" = "1" ]; then
+	echo "\$ ${cmd}"
+fi
+
+# Execute
+if ! out="$( eval "${cmd}" 2>&1 )"; then
+	if [ -z "${DEF_VERBOSE}" ]; then
+		echo "\$ ${cmd}"
+	fi
+	>&2 echo "${out}"
+	exit 1
+fi
+
+
+###
+### 2. Create Certificate
+###
+
+# Command
+cmd=" openssl x509 \
+  -req \
+  -extensions v3_req \
+  -extfile <(printf '[ req ]\nreq_extensions = v3_req\n[ v3_req ]\nsubjectAltName=${ALT_NAMES}') \
+  -days ${DEF_DAYS} \
+  -in ${CSR_FILE} \
+  -CA ${CA_CRT_FILE} \
+  -CAkey ${CA_KEY_FILE} \
+  -CAcreateserial \
+  -out ${CRT_FILE}"
+
+# Trim newlines/whitespaces
+cmd="$( echo "${cmd}" | tr -s " " )"
+
+# Debug
+if [ "${DEF_VERBOSE}" = "1" ]; then
+	echo "\$ ${cmd}"
+fi
+
+# Execute
+if ! out="$( eval "${cmd}" 2>&1 )"; then
+	if [ -z "${DEF_VERBOSE}" ]; then
+		echo "\$ ${cmd}"
+	fi
+	>&2 echo "${out}"
+	exit 1
+fi
+
+
+###
+### 4. Validate
+###
+openssl x509 -in "${CRT_FILE}" -text -noout
+openssl verify -verbose -CAfile "${CA_CRT_FILE}" "${CRT_FILE}"
