@@ -206,6 +206,28 @@ Certificate:
          02:db:c7:03
 ```
 
+## Import to Chrome
+
+**1. Open Chrome settings - scroll down and click `Advanced`**
+
+<img width="600" style="width:600px;" src="img/01-settings.png" />
+
+**2. Find and click on `Manage certificates`**
+
+<img width="600" style="width:600px;" src="img/02-advanced-settings.png" />
+
+**3. In the tab, navigate to `AUTHORITIES`**
+
+<img width="600" style="width:600px;" src="img/03-authorities.png" />
+
+**4. Select `devilbox-ca.crt` from within the Devilbox git directory**
+
+<img width="600" style="width:600px;" src="img/04-import.png" />
+
+**5. Check all boxes**
+
+<img width="600" style="width:600px;" src="img/05-set-trust.png" />
+
 
 ## License
 
