@@ -128,6 +128,108 @@ i5jbJDaGsbPOV1407U8OZIhH6vVRuqUEuLWY5E4zwRcPDg==
 -----END CERTIFICATE-----
 ```
 
+
+## Create certificate
+
+#### Usage
+```bash
+USAGE: cert-gen -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>
+       cert-gen --help
+       cert-gen --version
+
+Required arguments
+  -n CN       Common Name
+
+Optional arguments
+  -k int      Key size in bits
+  -d int      Validity in days
+  -c C        Subject two letter country name (C)
+  -s ST       Subject state name (ST)
+  -l L        Subject location (L)
+  -o O        Subject organization (O)
+  -u OU       Subject organizational unit (OU)
+  -e Email    Subject email (emailAddress)
+  -a names    Comma separated list of alt names (subjectAltName)
+  -v          Verbose output
+
+Required parameter
+  <ca-key>    Path to existing CA key file
+  <ca-crt>    Path to existing CA crt file
+  <key>       Path to output certificate key file
+  <csr>       Path to output certificate csr file
+  <crt>       Path to output certificate crt file
+```
+
+#### Devilbox example
+```bash
+$ cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox \
+           -n project.loc -e admin@project.loc \
+           -a '*.project.loc,*.www.project.loc' \
+           devilbox-rootCA.key \
+           devilbox-rootCA.crt \
+           project.loc.key \
+           project.loc.csr \
+           project.loc.crt
+```
+
+#### Example output
+```bash
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            ea:c2:f4:1b:69:c8:66:cd
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = devilbox.org, emailAddress = ca@devilbox.org, dnQualifier = "1A8KSvbo+y7FW1H3dMZWUENkeec="
+        Validity
+            Not Before: May  1 09:59:25 2018 GMT
+            Not After : Apr 28 09:59:25 2028 GMT
+        Subject: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = project.loc, emailAddress = admin@project.loc
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:d6:92:6f:27:72:a4:69:6a:5f:f8:11:5a:15:f0:
+                    fd:c6:e9:8e:e7:4c:38:5e:f9:d4:d0:79:26:6b:6e:
+                    c8:65:a1:2e:f1:3b:64:4e:b0:da:c4:42:02:87:70:
+                    10:bb:8f:46:08:aa:48:c2:01:b1:d2:10:8c:ce:6c:
+                    62:78:38:41:1a:83:4f:df:42:2e:d9:eb:7e:b1:67:
+                    76:10:a4:60:b2:a4:af:dd:2d:98:24:be:48:21:fd:
+                    c9:74:bc:2d:57:0f:26:15:a1:1f:cc:38:65:9f:26:
+                    74:08:1d:3f:b4:96:ed:7d:1a:b9:5a:c7:5e:bf:34:
+                    a8:fa:b6:c1:0b:38:e4:c7:78:3d:e3:7e:6e:a8:f5:
+                    24:bf:12:1c:9d:22:c9:ab:24:50:5b:88:3f:16:ac:
+                    fb:2a:b7:6e:da:1e:ec:34:56:60:ed:3c:f7:e0:08:
+                    76:23:8a:54:49:11:10:29:c8:4d:ed:4b:ef:66:45:
+                    7a:7d:cb:25:95:70:fd:07:2a:9b:88:a6:63:f1:b3:
+                    7b:9e:82:bf:a3:81:11:84:0c:71:ee:10:bf:bc:c8:
+                    6b:b2:7c:74:de:ac:ee:d8:04:3a:57:ff:aa:9e:7c:
+                    b1:4e:06:26:68:e6:c2:0c:73:74:a2:72:91:7a:0d:
+                    e9:80:03:e8:b1:ec:0a:fc:19:59:26:e8:2c:2f:8f:
+                    de:97
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Alternative Name:
+                DNS:project.loc, DNS:*.project.loc, DNS:*.www.project.loc
+    Signature Algorithm: sha256WithRSAEncryption
+         59:4b:33:4c:99:7c:20:e1:92:ba:cb:0a:27:6f:da:be:ed:17:
+         ce:cf:f5:18:95:bf:a3:fa:a2:b9:0b:43:cb:a9:90:67:ec:17:
+         fe:15:96:57:90:00:e7:a3:92:c4:5d:9f:e3:06:38:75:33:7d:
+         27:35:a3:91:99:3d:60:3d:85:62:86:c1:a5:77:ae:d1:bb:95:
+         b0:b7:7f:74:b8:1a:f8:09:32:8c:1e:0a:6e:0d:1b:51:8b:bb:
+         bd:58:78:b6:4d:89:8c:18:1c:0b:77:43:8c:9d:ee:53:3c:1f:
+         ab:52:da:99:d3:87:e0:c9:0b:b8:28:29:08:de:1b:7f:69:eb:
+         14:1a:fe:0d:5c:c4:ca:f0:56:ec:48:af:4a:21:38:1e:f6:23:
+         7c:c8:05:d8:d8:9b:1e:f3:59:3a:a3:37:b9:ce:a8:af:5a:2d:
+         72:d1:94:71:34:94:c1:fd:6f:c0:27:c4:9b:3d:59:0b:02:20:
+         12:c7:35:de:c0:bd:7a:38:04:0f:41:ed:36:bd:75:27:cb:64:
+         8d:0a:cf:39:29:7e:59:36:39:07:5e:70:46:9f:63:a1:33:62:
+         8d:27:50:3a:62:96:b0:5b:97:c4:3e:6c:e4:5b:71:bc:92:bf:
+         45:d5:31:25:eb:f2:65:17:7c:96:fe:5c:94:aa:72:f6:fd:9c:
+         02:db:c7:03
+```
+
+
 ## License
 
 [MIT License](LICENSE.md)
