@@ -1,6 +1,8 @@
 # ca-gen
 
-Easily create your CA and self-signed certificates.
+Easily create your own CA and self-signed certificates.
+
+CA can be imported into Chrome, Firefox and Internet Explorer for local development.
 
 ## Available Tools
 
@@ -9,6 +11,12 @@ Easily create your CA and self-signed certificates.
 
 
 ## Create CA
+
+#### Devilbox example
+```bash
+$ ca-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n devilbox.org \
+       -e ca@devilbox.org devilbox-rootCA.key devilbox-rootCA.crt
+```
 
 #### Usage
 ```bash
@@ -33,12 +41,6 @@ Optional arguments
 Required parameter
   <keyfile>   Path to output key file
   <crtfile>   Path to output cert file
-```
-
-#### Devilbox example
-```bash
-$ ca-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n devilbox.org \
-       -e ca@devilbox.org devilbox-rootCA.key devilbox-rootCA.crt
 ```
 
 #### Example output
@@ -101,35 +103,22 @@ Certificate:
          4d:dd:0a:02:11:21:8b:98:db:24:36:86:b1:b3:ce:57:5e:34:
          ed:4f:0e:64:88:47:ea:f5:51:ba:a5:04:b8:b5:98:e4:4e:33:
          c1:17:0f:0e
------BEGIN CERTIFICATE-----
-MIIEPjCCAyagAwIBAgIJAOOhwK1m45+uMA0GCSqGSIb3DQEBCwUAMIGzMQswCQYD
-VQQGEwJERTEPMA0GA1UECAwGQmVybGluMQ8wDQYDVQQHDAZCZXJsaW4xETAPBgNV
-BAoMCERldmlsYm94MREwDwYDVQQLDAhEZXZpbGJveDEVMBMGA1UEAwwMZGV2aWxi
-b3gub3JnMR4wHAYJKoZIhvcNAQkBFg9jYUBkZXZpbGJveC5vcmcxJTAjBgNVBC4T
-HDFBOEtTdmJvK3k3RlcxSDNkTVpXVUVOa2VlYz0wHhcNMTgwNTAxMDkyMjA5WhcN
-MjgwNDI4MDkyMjA5WjCBszELMAkGA1UEBhMCREUxDzANBgNVBAgMBkJlcmxpbjEP
-MA0GA1UEBwwGQmVybGluMREwDwYDVQQKDAhEZXZpbGJveDERMA8GA1UECwwIRGV2
-aWxib3gxFTATBgNVBAMMDGRldmlsYm94Lm9yZzEeMBwGCSqGSIb3DQEJARYPY2FA
-ZGV2aWxib3gub3JnMSUwIwYDVQQuExwxQThLU3Zibyt5N0ZXMUgzZE1aV1VFTmtl
-ZWM9MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3aXB4cmJM2bceulC
-ATJyKcm9v4WWnQebmHmVIyM6qO3+iIaI5FH6QLxPmtXBRV9x7GzT3TWrGn05TwTv
-7xSxyaHyFM83q1VLrq09MsBm1R+B8E9sKJbAmDd6yoalk3oN1bODzSIPJloZOTU6
-gq2mE962Ygq8V/IBMcc6znICdub8A57BU2MPrbMrsPt+hMD503nZI6ZV1jqotdYB
-Lhj+l6gskc2Tbq5hEctXOJvMHchBi/q82DS7+A5XqqzYUOJGWYj3eoXCCO8ONZlm
-qyX2g0pNchGL62FFbDz9CY2DZslYl4qZJyC5QqfUJBFea5wPuzd7j3mar9a5mg+a
-OcX6mQIDAQABo1MwUTAdBgNVHQ4EFgQU1A8KSvbo+y7FW1H3dMZWUENkeecwHwYD
-VR0jBBgwFoAU1A8KSvbo+y7FW1H3dMZWUENkeecwDwYDVR0TAQH/BAUwAwEB/zAN
-BgkqhkiG9w0BAQsFAAOCAQEAO+e1D8p6dPmTwllF+YCxa8Ui85PH32Wg+Tfi0KYV
-Vk8ZYZ3kbbSI2IxAbedjA4lNBnNqxYvOO6v5j8nn/KYTiP9VIwPVF+RMOL+9bGLw
-Fg4/2WSDCfU4OZtMZDPGnKRxh5gZxETvgmDcE49uXgulIrEuJpPPIds7fOKdXBXb
-X61pW2b18FV1tcKttFZ3r0qNZGHB2fBKBAlhF5jXGsXnQU6ZrzqGysRj+BpVxlfB
-OEDeeqiaeromOYvMV9uhgOzs7S9/X0NBtTiiOojI90aD4i87ZK8kpeGvTd0KAhEh
-i5jbJDaGsbPOV1407U8OZIhH6vVRuqUEuLWY5E4zwRcPDg==
------END CERTIFICATE-----
 ```
 
 
 ## Create certificate
+
+#### Devilbox example
+```bash
+$ cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox \
+           -n project.loc -e admin@project.loc \
+           -a '*.project.loc,*.www.project.loc' \
+           devilbox-rootCA.key \
+           devilbox-rootCA.crt \
+           project.loc.key \
+           project.loc.csr \
+           project.loc.crt
+```
 
 #### Usage
 ```bash
@@ -158,18 +147,6 @@ Required parameter
   <key>       Path to output certificate key file
   <csr>       Path to output certificate csr file
   <crt>       Path to output certificate crt file
-```
-
-#### Devilbox example
-```bash
-$ cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox \
-           -n project.loc -e admin@project.loc \
-           -a '*.project.loc,*.www.project.loc' \
-           devilbox-rootCA.key \
-           devilbox-rootCA.crt \
-           project.loc.key \
-           project.loc.csr \
-           project.loc.crt
 ```
 
 #### Example output
