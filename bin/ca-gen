@@ -1,0 +1,264 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+set -o pipefail
+
+NAME="ca-gen"
+
+# Generate default options
+DEF_KEYSIZE=2048
+DEF_DAYS=3650
+# Subject default options
+DEF_COUNTRY=
+DEF_STATE=
+DEF_CITY=
+DEF_ORG=
+DEF_UNIT=
+DEF_CN=
+DEF_EMAIL=
+
+# Verbosity
+DEF_VERBOSE=
+
+
+print_version() {
+	echo "${NAME} v0.1"
+}
+print_help() {
+	echo "USAGE: ${NAME} -n CN [-kdcslouev] <keyfile> <crtfile>"
+	echo "       ${NAME} --help"
+	echo "       ${NAME} --version"
+	echo
+	echo "Required arguments"
+	echo "  -n CN       Common Name"
+	echo
+	echo "Optional arguments"
+	echo "  -k int      Key size in bits"
+	echo "  -d int      Validity in days"
+	echo "  -c C        Subject two letter country name (C)"
+	echo "  -s ST       Subject state name (ST)"
+	echo "  -l L        Subject location (L)"
+	echo "  -o O        Subject organization (O)"
+	echo "  -u OU       Subject organizational unit (OU)"
+	echo "  -e Email    Subject email (emailAddress)"
+	echo "  -v          Verbose output"
+	echo
+	echo "Required parameter"
+	echo "  <keyfile>   Path to output key file"
+	echo "  <crtfile>   Path to output cert file"
+}
+
+
+################################################################################
+# Entrypoint: Parse cmd args
+################################################################################
+
+# Get options
+while [ ${#} -gt 0 ]; do
+	case "${1}" in
+		# ---- Help / version
+		--version)
+			print_version
+			exit
+			;;
+		--help)
+			print_help
+			exit
+			;;
+		-v)
+			DEF_VERBOSE=1
+			shift
+			;;
+		# ---- Options
+		-k)
+			shift
+			DEF_KEYSIZE="${1}"
+			shift
+			;;
+		-d)
+			shift
+			DEF_DAYS="${1}"
+			shift
+			;;
+		-c)
+			shift
+			DEF_COUNTRY="${1}"
+			shift
+			;;
+		-s)
+			shift
+			DEF_STATE="${1}"
+			shift
+			;;
+		-l)
+			shift
+			DEF_CITY="${1}"
+			shift
+			;;
+		-o)
+			shift
+			DEF_ORG="${1}"
+			shift
+			;;
+		-u)
+			shift
+			DEF_UNIT="${1}"
+			shift
+			;;
+		-n)
+			shift
+			DEF_CN="${1}"
+			shift
+			;;
+		-e)
+			shift
+			DEF_EMAIL="${1}"
+			shift
+			;;
+		# ---- Stop here
+		--) # End of all options
+			shift
+			break
+			;;
+		-*) # Unknown option
+			>&2 echo "Error: Unknown option: ${1}"
+			exit 1
+			;;
+		*)  # No more options
+			break
+			;;
+	esac
+done
+
+
+################################################################################
+# Entrypoint: Validate cmd args
+################################################################################
+
+if [ -z "${DEF_CN}" ]; then
+	>&2 echo "Error: -n is required. See --help for help."
+	exit 1
+fi
+
+if [ "${#}" -lt "2" ]; then
+	>&2 echo "Error: <keyfile> and <crtfile> are required. See --help for help."
+	exit 1
+fi
+
+CA_KEY_FILE="${1}"
+CA_CRT_FILE="${2}"
+
+
+
+################################################################################
+# Entrypoint: Execute
+################################################################################
+
+###
+### Build subject
+###
+SUBJECT=
+if [ -n "${DEF_COUNTRY}" ]; then
+	SUBJECT="${SUBJECT}/C=${DEF_COUNTRY}"
+fi
+if [ -n "${DEF_STATE}" ]; then
+	SUBJECT="${SUBJECT}/ST=${DEF_STATE}"
+fi
+if [ -n "${DEF_CITY}" ]; then
+	SUBJECT="${SUBJECT}/L=${DEF_CITY}"
+fi
+if [ -n "${DEF_ORG}" ]; then
+	SUBJECT="${SUBJECT}/O=${DEF_ORG}"
+fi
+if [ -n "${DEF_UNIT}" ]; then
+	SUBJECT="${SUBJECT}/OU=${DEF_UNIT}"
+fi
+if [ -n "${DEF_CN}" ]; then
+	SUBJECT="${SUBJECT}/CN=${DEF_CN}"
+fi
+if [ -n "${DEF_EMAIL}" ]; then
+	SUBJECT="${SUBJECT}/emailAddress=${DEF_EMAIL}"
+fi
+
+
+###
+### Build commands
+###
+
+###
+### 1. Create Key
+###
+
+# Command
+cmd="openssl genrsa \
+  -out ${CA_KEY_FILE} \
+  ${DEF_KEYSIZE}"
+
+# Trim newlines/whitespaces
+cmd="$( echo "${cmd}" | tr -s " " )"
+
+# Debug
+if [ "${DEF_VERBOSE}" = "1" ]; then
+	echo "\$ ${cmd}"
+fi
+
+# Execute
+if ! out="$( eval "${cmd}" 2>&1 )"; then
+	if [ -z "${DEF_VERBOSE}" ]; then
+		echo "\$ ${cmd}"
+	fi
+	>&2 echo "${out}"
+	exit 1
+fi
+
+
+###
+### 2. Create dnQualifier
+###
+
+# Subject dnQualifier (Public key thumbprint, see SMPTE 430-2-2006 sections 5.3.1, 5.4 and DCI CTP section 2.1.11)
+ca_dnq="$( openssl rsa -outform PEM -pubout -in "${CA_KEY_FILE}" | openssl base64 -d | dd bs=1 skip=24 2>/dev/null | openssl sha1 -binary | openssl base64 )"
+ca_dnq="$( echo "${ca_dnq}" | sed 's|/|\\/|g' )" # can have values like '0Za8/aABE05Aroz7le1FOpEdFhk=', note the '/'. protect for name parser
+SUBJECT="${SUBJECT}/dnQualifier=${ca_dnq}"
+
+
+###
+### 3. Create CA
+###
+
+# Command
+cmd="openssl req \
+  -new \
+  -x509 \
+  -nodes \
+  -sha256 \
+  -days ${DEF_DAYS} \
+  -key ${CA_KEY_FILE} \
+  -subj '${SUBJECT}' \
+  -extensions v3_ca \
+  -out ${CA_CRT_FILE}"
+
+# Trim newlines/whitespaces
+cmd="$( echo "${cmd}" | tr -s " " )"
+
+# Debug
+if [ "${DEF_VERBOSE}" = "1" ]; then
+	echo "\$ ${cmd}"
+fi
+
+# Execute
+if ! out="$( eval "${cmd}" 2>&1 )"; then
+	if [ -z "${DEF_VERBOSE}" ]; then
+		echo "\$ ${cmd}"
+	fi
+	>&2 echo "${out}"
+	exit 1
+fi
+
+
+###
+### 4. Validate
+###
+openssl x509 -in "${CA_CRT_FILE}" -text
+openssl x509 -noout -subject -issuer -in "${CA_CRT_FILE}"
