@@ -23,7 +23,7 @@ DEF_VERBOSE=
 
 
 print_version() {
-	echo "${NAME} v0.1"
+	echo "${NAME} v0.2"
 }
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcslouev] <keyfile> <crtfile>"

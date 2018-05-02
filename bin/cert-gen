@@ -26,7 +26,7 @@ DEF_VERBOSE=
 
 
 print_version() {
-	echo "${NAME} v0.1"
+	echo "${NAME} v0.2"
 }
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>"
@@ -224,7 +224,7 @@ fi
 ###
 
 # Command
-cmd=" openssl req \
+cmd="openssl req \
   -newkey rsa:${DEF_KEYSIZE} \
   -nodes \
   -extensions v3_req \
@@ -256,10 +256,10 @@ fi
 
 # Command
 # shellcheck disable=SC1117
-cmd=" openssl x509 \
+cmd="openssl x509 \
   -req \
   -extensions v3_req \
-  -extfile <(printf '[ req ]\nreq_extensions = v3_req\n[ v3_req ]\nsubjectAltName=${ALT_NAMES}'\n) \
+  -extfile <(printf '[ req ]\nreq_extensions = v3_req\n[ v3_req ]\nsubjectAltName=${ALT_NAMES}\n') \
   -days ${DEF_DAYS} \
   -in ${CSR_FILE} \
   -CA ${CA_CRT_FILE} \
