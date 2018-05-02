@@ -1,0 +1,22 @@
+sudo: required
+
+language: bash
+
+before_install:
+  # Add more modern repos
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq python-software-properties
+  - sudo add-apt-repository ppa:brightbox/ruby-ng -y
+  - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty-backports restricted main universe"
+
+  # Update sources
+  - sudo apt-get update -qqy
+
+  # Install
+  - sudo apt-get install -qqy shellcheck
+
+
+script:
+
+  - shellcheck --shell=bash bin/ca-gen
+  - shellcheck --shell=bash bin/cert-gen

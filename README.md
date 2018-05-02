@@ -1,24 +1,60 @@
 # ca-gen
 
+[![Build Status](https://travis-ci.org/devilbox/cert-gen.svg?branch=master)](https://travis-ci.org/devilbox/cert-gen)
+[![Join the chat at https://gitter.im/devilbox/Lobby](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![Tag](https://img.shields.io/github/tag/devilbox/ca-gen.svg)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 Easily create your own CA and self-signed certificates.
 
-CA can be imported into Chrome, Firefox and Internet Explorer for local development.
+The generated CA can be imported into Chrome, Firefox or Internet Explorer for local development.
+All subsequent created certificates will then be valid SSL certificates to each browser.
+
+<img width="200" style="width:200px;" src="img/address-bar.png" />
+
+**Table of Contents**
+
+1. [Available Tools](#available-tools)
+    1. [Tools](#tools)
+    2. [Requirements](#requirements)
+    3. [Installation](#installation)
+2. [Create Certificate Authoriy](#create-certificate-authority)
+    1. [Usage: ca-gen](#usage-ca-gen)
+    2. [Execute: ca-gen](#execute-ca-gen)
+    3. [Example: CA](#example-ca)
+3. [Create SSL Certificate](#create-ssl-certificate)
+    1. [Usage: cert-gen](#usage-cert-gen)
+    2. [Execute: cert-gen](#execute-cert-gen)
+    3. [Example: SSL certificate](#example-ssl-certificate)
+4. [Import CA into Chrome](#import-ca-into-chrome)
+5. [License](#license)
+
+----
 
 ## Available Tools
 
-* [ca-gen](bin/ca-gen)
-* [cert-gen](bin/cert-gen)
+#### Tools
 
+| Tools                    | Description |
+|--------------------------|-------------|
+| [ca-gen](bin/ca-gen)     | Creates a certificate authority |
+| [cert-gen](bin/cert-gen) | Creates SSL certificates signed by a certificate authority |
 
-## Create CA
+#### Requirements
 
-#### Devilbox example
+* `openssl`
+* `bash`
+
+#### Installation
 ```bash
-$ ca-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n devilbox.org \
-       -e ca@devilbox.org devilbox-rootCA.key devilbox-rootCA.crt
+$ sudo make install
 ```
 
-#### Usage
+
+## Create Certificate Authority
+
+#### Usage: ca-gen
+The following shows the general usage for `ca-gen`:
 ```bash
 USAGE: ca-gen -n CN [-kdcslouev] <keyfile> <crtfile>
        ca-gen --help
@@ -43,7 +79,14 @@ Required parameter
   <crtfile>   Path to output cert file
 ```
 
-#### Example output
+#### Execute: ca-gen
+The following command shows how the CA is generated for the [Devilbox](https;//github.com/cytopia/devilbox):
+```bash
+$ ca-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n devilbox.org \
+       -e ca@devilbox.org devilbox-rootCA.key devilbox-rootCA.crt
+```
+
+#### Example: CA
 ```bash
 Certificate:
     Data:
@@ -106,21 +149,10 @@ Certificate:
 ```
 
 
-## Create certificate
+## Create SSL Certificate
 
-#### Devilbox example
-```bash
-$ cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox \
-           -n project.loc -e admin@project.loc \
-           -a '*.project.loc,*.www.project.loc' \
-           devilbox-rootCA.key \
-           devilbox-rootCA.crt \
-           project.loc.key \
-           project.loc.csr \
-           project.loc.crt
-```
-
-#### Usage
+#### Usage: cert-gen
+The following shows the general usage for cert-gen:
 ```bash
 USAGE: cert-gen -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>
        cert-gen --help
@@ -149,7 +181,20 @@ Required parameter
   <crt>       Path to output certificate crt file
 ```
 
-#### Example output
+#### Execute: cert-gen
+The following command shows how SSL certificates are generated for the [Devilbox](github.com/cytopia/devilbox):
+```bash
+$ cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox \
+           -n project.loc -e admin@project.loc \
+           -a '*.project.loc,*.www.project.loc' \
+           devilbox-rootCA.key \
+           devilbox-rootCA.crt \
+           project.loc.key \
+           project.loc.csr \
+           project.loc.crt
+```
+
+#### Example: SSL Certificate
 ```bash
 Certificate:
     Data:
@@ -206,7 +251,8 @@ Certificate:
          02:db:c7:03
 ```
 
-## Import to Chrome
+
+## Import CA into Chrome
 
 **1. Open Chrome settings - scroll down and click `Advanced`**
 
