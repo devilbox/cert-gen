@@ -255,10 +255,11 @@ fi
 ###
 
 # Command
+# shellcheck disable=SC1117
 cmd=" openssl x509 \
   -req \
   -extensions v3_req \
-  -extfile <(printf '[ req ]\nreq_extensions = v3_req\n[ v3_req ]\nsubjectAltName=${ALT_NAMES}') \
+  -extfile <(printf '[ req ]\nreq_extensions = v3_req\n[ v3_req ]\nsubjectAltName=${ALT_NAMES}'\n) \
   -days ${DEF_DAYS} \
   -in ${CSR_FILE} \
   -CA ${CA_CRT_FILE} \
@@ -287,5 +288,18 @@ fi
 ###
 ### 4. Validate
 ###
-openssl x509 -in "${CRT_FILE}" -text -noout
-openssl verify -verbose -CAfile "${CA_CRT_FILE}" "${CRT_FILE}"
+if ! out="$( openssl x509 -in "${CRT_FILE}" -text -noout )"; then
+	echo "${out}"
+	exit 1
+fi
+if [ "${DEF_VERBOSE}" = "1" ]; then
+	echo "${out}"
+fi
+
+if ! out="$( openssl verify -verbose -CAfile "${CA_CRT_FILE}" "${CRT_FILE}" )"; then
+	echo "${out}"
+	exit 1
+fi
+if [ "${DEF_VERBOSE}" = "1" ]; then
+	echo "${out}"
+fi

@@ -218,8 +218,8 @@ fi
 ###
 
 # Subject dnQualifier (Public key thumbprint, see SMPTE 430-2-2006 sections 5.3.1, 5.4 and DCI CTP section 2.1.11)
-ca_dnq="$( openssl rsa -outform PEM -pubout -in "${CA_KEY_FILE}" | openssl base64 -d | dd bs=1 skip=24 2>/dev/null | openssl sha1 -binary | openssl base64 )"
-ca_dnq="$( echo "${ca_dnq}" | sed 's|/|\\/|g' )" # can have values like '0Za8/aABE05Aroz7le1FOpEdFhk=', note the '/'. protect for name parser
+ca_dnq="$( openssl rsa -outform PEM -pubout -in "${CA_KEY_FILE}" 2>/dev/null | openssl base64 -d | dd bs=1 skip=24 2>/dev/null | openssl sha1 -binary | openssl base64 )"
+ca_dnq="${ca_dnq//\//\\/}" # echo "${ca_dnq}" | sed 's|/|\\/|g' )" # can have values like '0Za8/aABE05Aroz7le1FOpEdFhk=', note the '/'. protect for name parser
 SUBJECT="${SUBJECT}/dnQualifier=${ca_dnq}"
 
 
@@ -260,5 +260,18 @@ fi
 ###
 ### 4. Validate
 ###
-openssl x509 -in "${CA_CRT_FILE}" -text
-openssl x509 -noout -subject -issuer -in "${CA_CRT_FILE}"
+if ! out="$( openssl x509 -in "${CA_CRT_FILE}" -text )"; then
+	echo "${out}"
+	exit 1
+fi
+if [ "${DEF_VERBOSE}" = "1" ]; then
+	echo "${out}"
+fi
+
+if ! out="$( openssl x509 -noout -subject -issuer -in "${CA_CRT_FILE}" )"; then
+	echo "${out}"
+	exit 1
+fi
+if [ "${DEF_VERBOSE}" = "1" ]; then
+	echo "${out}"
+fi
