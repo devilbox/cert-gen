@@ -1,8 +1,8 @@
-# ca-gen
+# cert-gen
 
 [![Build Status](https://travis-ci.org/devilbox/cert-gen.svg?branch=master)](https://travis-ci.org/devilbox/cert-gen)
 [![Join the chat at https://gitter.im/devilbox/Lobby](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-![Tag](https://img.shields.io/github/tag/devilbox/ca-gen.svg)
+![Tag](https://img.shields.io/github/tag/devilbox/cert-gen.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Easily create your own CA and self-signed certificates.
@@ -80,7 +80,7 @@ Required parameter
 ```
 
 #### Execute: ca-gen
-The following command shows how the CA is generated for the [Devilbox](https;//github.com/cytopia/devilbox):
+The following command shows how the CA is generated for the [Devilbox](https://github.com/cytopia/devilbox):
 ```bash
 $ ca-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n devilbox.org \
        -e ca@devilbox.org devilbox-rootCA.key devilbox-rootCA.crt
@@ -182,7 +182,7 @@ Required parameter
 ```
 
 #### Execute: cert-gen
-The following command shows how SSL certificates are generated for the [Devilbox](github.com/cytopia/devilbox):
+The following command shows how SSL certificates are generated for the [Devilbox](https://github.com/cytopia/devilbox):
 ```bash
 $ cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox \
            -n project.loc -e admin@project.loc \
