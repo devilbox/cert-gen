@@ -171,6 +171,7 @@ Optional arguments
   -u OU       Subject organizational unit (OU)
   -e Email    Subject email (emailAddress)
   -a names    Comma separated list of alt names (subjectAltName)
+  -i ips      Comma separated list of alt ip addresses (subjectAltName)
   -v          Verbose output
 
 Required parameter

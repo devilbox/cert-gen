@@ -20,6 +20,7 @@ DEF_EMAIL=
 
 # v3 subject alt names
 DEF_ALT_NAME=
+DEF_ALT_IP_NAME=
 
 # Verbosity
 DEF_VERBOSE=
@@ -46,6 +47,7 @@ print_help() {
 	echo "  -u OU       Subject organizational unit (OU)"
 	echo "  -e Email    Subject email (emailAddress)"
 	echo "  -a names    Comma separated list of alt names (subjectAltName)"
+	echo "  -i ips      Comma separated list of alt ip addresses (subjectAltName)"
 	echo "  -v          Verbose output"
 	echo
 	echo "Required parameter"
@@ -126,6 +128,11 @@ while [ ${#} -gt 0 ]; do
 		-a)
 			shift
 			DEF_ALT_NAME="${1}"
+			shift
+			;;
+		-i)
+			shift
+			DEF_ALT_IP_NAME="${1}"
 			shift
 			;;
 		# ---- Stop here
@@ -212,6 +219,13 @@ i=2
 if [ -n "${DEF_ALT_NAME}" ]; then
 	for cn in ${DEF_ALT_NAME//,/ }; do
 		ALT_NAMES="${ALT_NAMES},DNS.${i}:${cn}"
+	done
+fi
+
+i=1
+if [ -n "${DEF_ALT_IP_NAME}" ]; then
+	for cn in ${DEF_ALT_IP_NAME//,/ }; do
+		ALT_NAMES="${ALT_NAMES},IP.${i}:${cn}"
 	done
 fi
 
