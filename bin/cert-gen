@@ -8,7 +8,7 @@ NAME="cert-gen"
 
 # Generate default options
 DEF_KEYSIZE=2048
-DEF_DAYS=3650
+DEF_DAYS=800
 # Subject default options
 DEF_COUNTRY=
 DEF_STATE=
