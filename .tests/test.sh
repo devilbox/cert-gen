@@ -21,6 +21,15 @@ rm -rf "${TEST_PATH}/tmp"
 mkdir "${TEST_PATH}/tmp"
 
 
+###
+### Do we test in Docker container?
+###
+USE_DOCKER=0
+if [ "${#}" = "1" ]; then
+	USE_DOCKER=1
+fi
+
+
 # -------------------------------------------------------------------------------------------------
 # Variables
 # -------------------------------------------------------------------------------------------------
@@ -163,35 +172,98 @@ echo "[INFO] Verify certificate is issued by CA"
 run "openssl verify -verbose -CAfile ${CA_CRT_PATH} ${CERT_CRT_PATH}"
 
 
-echo
-echo "# -------------------------------------------------------------------------------------------------"
-echo "# Testing browser certificate"
-echo "# -------------------------------------------------------------------------------------------------"
-echo
 
-echo "[INFO] Pulling Docker Image"
-run "docker pull ${DOCKER_IMAGE}"
+ERROR=0
+if [ "${USE_DOCKER}" = "1" ]; then
+	echo
+	echo "# -------------------------------------------------------------------------------------------------"
+	echo "# Testing browser certificate (inside Docker container)"
+	echo "# -------------------------------------------------------------------------------------------------"
+	echo
 
-echo
-echo "[INFO] Ensuring Docker Image is not running"
-run "docker rm -f ${DOCKER_NAME} >/dev/null 2>&1 || true"
+	echo "[INFO] Pulling Docker Image"
+	run "docker pull ${DOCKER_IMAGE}"
 
-echo
-echo "[INFO] Starting Docker Image with OpenSSL server"
-run "docker run -d --rm --name ${DOCKER_NAME} -w /data -p '${OPENSSL_PORT}:${OPENSSL_PORT}' -v ${TEST_PATH}/tmp:/data ${DOCKER_IMAGE} sh -c '
-	apt-get update &&
-	apt-get install -y openssl &&
-	set -x &&
-	openssl s_server -key ${CERT_KEY_NAME} -cert ${CERT_CRT_NAME} -CAfile ${CA_CRT_NAME} -accept ${OPENSSL_PORT} -www' >/dev/null"
+	echo
+	echo "[INFO] Ensuring Docker Image is not running"
+	run "docker rm -f ${DOCKER_NAME} >/dev/null 2>&1 || true"
 
-echo
-echo "[INFO] Testing valid https connection with curl"
-if ! run "curl -sS -o /dev/null -w '%{http_code}' --cacert ${CA_CRT_PATH} 'https://localhost:${OPENSSL_PORT}' | grep 200 >/dev/null" "60"; then
-	echo "Failed"
-	run "docker rm -f ${DOCKER_NAME} >/dev/null 2>&1" || true
-	exit 1
+	echo
+	echo "[INFO] Starting Docker Image with OpenSSL server"
+	run "docker run -d --rm --name ${DOCKER_NAME} -w /data -p '${OPENSSL_PORT}:${OPENSSL_PORT}' -v ${TEST_PATH}/tmp:/data ${DOCKER_IMAGE} sh -c '
+		apt-get update -qq &&
+		apt-get install -qq -y curl openssl > /dev/null &&
+		set -x &&
+		openssl s_server -key ${CERT_KEY_NAME} -cert ${CERT_CRT_NAME} -CAfile ${CA_CRT_NAME} -accept ${OPENSSL_PORT} -www' >/dev/null"
+
+	echo
+	echo "[INFO] Waiting for Docker container to start"
+	run "sleep 5"
+
+	echo
+	echo "[INFO] Testing valid https connection with curl"
+	if ! run "docker exec -w /data ${DOCKER_NAME} curl -sS -o /dev/null -w '%{http_code}' --cacert ${CA_CRT_NAME} 'https://localhost:${OPENSSL_PORT}' | grep 200" "60"; then
+		ERROR=1
+	fi
+
+	echo
+	echo "[INFO] Testing valid https connection with openssl client"
+	if ! run "echo | openssl s_client -verify 8 -CAfile ${CA_CRT_PATH} >/dev/null" "60"; then
+		ERROR=1
+	fi
+
+	echo "[INFO] Validating openssl certificate with openssl client"
+	if ! run "echo | openssl s_client -verify 8 -CAfile ${CA_CRT_PATH} | grep 'Verify return code: 0 (ok)'" "60"; then
+		ERROR=1
+	fi
+
+	echo
+	echo "[INFO] Show info and clean up"
+	run "docker logs ${DOCKER_NAME} || true"
+	run "docker rm -f ${DOCKER_NAME} >/dev/null 2>&1 || true"
+
+else
+	echo
+	echo "# -------------------------------------------------------------------------------------------------"
+	echo "# Testing browser certificate (on host system)"
+	echo "# -------------------------------------------------------------------------------------------------"
+	echo
+
+	echo
+	echo "[INFO] Ensuring OpenSSL server is not running"
+	run "ps aux | grep openssl | grep s_server | awk '{print \$2}' | xargs kill 2>/dev/null || true"
+
+	echo "[INFO] Starting OpenSSL server"
+	run "openssl s_server -key ${CERT_KEY_PATH} -cert ${CERT_CRT_PATH} -CAfile ${CA_CRT_PATH} -accept ${OPENSSL_PORT} -www >/dev/null &"
+
+	echo
+	echo "[INFO] Waiting for OpensSL server to start"
+	run "sleep 5"
+
+	echo
+	echo "[INFO] Testing valid https connection with curl"
+	if ! run "curl -sS -o /dev/null -w '%{http_code}' --cacert ${CA_CRT_PATH} 'https://localhost:${OPENSSL_PORT}' | grep 200" "60"; then
+		ERROR=1
+	fi
+
+	echo
+	echo "[INFO] Testing valid https connection with openssl client"
+	if ! run "echo | openssl s_client -verify 8 -CAfile ${CA_CRT_PATH} >/dev/null" "60"; then
+		ERROR=1
+	fi
+
+	echo
+	echo "[INFO] Validating openssl certificate with openssl client"
+	if ! run "echo | openssl s_client -verify 8 -CAfile ${CA_CRT_PATH} | grep 'Verify return code: 0 (ok)'" "60"; then
+		ERROR=1
+	fi
+
+	echo
+	echo "[INFO] Clean up"
+	run "ps aux | grep openssl | grep s_server | awk '{print \$2}' | xargs kill 2>/dev/null || true"
+
 fi
 
 echo
-echo "[INFO] Clean-up"
-run "docker rm -f ${DOCKER_NAME} >/dev/null 2>&1" || true
+echo "[INFO] Return success or failure"
+exit "${ERROR}"

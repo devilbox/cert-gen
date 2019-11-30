@@ -13,6 +13,14 @@ language: minimal
 
 
 ###
+### What operating systems to test on
+###
+os:
+  - linux
+  - osx
+
+
+###
 ### Install requirements
 ###
 install:
@@ -29,8 +37,20 @@ install:
 
 
 ###
-### Checks
+### Linting
+###
+before_script:
+  - if [ "$TRAVIS_OS_NAME" != "osx" ]; then
+      retry make lint;
+    fi
+
+
+###
+### Testing
 ###
 script:
-  - retry make lint
-  - retry make test
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+      retry make test;
+    else
+      retry make test ARGS=1;
+    fi

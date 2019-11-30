@@ -38,7 +38,7 @@ lint:
 	docker run --rm -v "$(PWD)/bin:/mnt" koalaman/shellcheck:stable cert-gen
 
 test:
-	.tests/test.sh
+	.tests/test.sh $(ARGS)
 
 
 # -------------------------------------------------------------------------------------------------
