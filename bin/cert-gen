@@ -9,6 +9,7 @@ NAME="cert-gen"
 # Generate default options
 DEF_KEYSIZE=2048
 DEF_DAYS=3650
+DEF_SIGN_SIGNATURE="sha256"
 # Subject default options
 DEF_COUNTRY=
 DEF_STATE=
@@ -251,6 +252,7 @@ ENDOFTEXT
 # Command
 cmd="openssl req \
   -newkey rsa:${DEF_KEYSIZE} \
+  -${DEF_SIGN_SIGNATURE} \
   -nodes \
   -extensions v3_req \
   -config <(echo \"${OPENSSL_CONFIG}\") \
@@ -284,7 +286,7 @@ fi
 # shellcheck disable=SC1117
 cmd="openssl x509 \
   -req \
-  -sha256 \
+  -${DEF_SIGN_SIGNATURE} \
   -extensions v3_req \
   -extfile <(printf '[ req ]\nreq_extensions = v3_req\n[ v3_req ]\nsubjectAltName=${ALT_NAMES}\n') \
   -days ${DEF_DAYS} \
