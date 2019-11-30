@@ -237,11 +237,23 @@ fi
 ### 1. Key and Signing Request
 ###
 
+OPENSSL_CONFIG="$( cat <<ENDOFTEXT
+[req]
+distinguished_name = req_distinguished_name
+x509_extensions = v3_req
+
+[req_distinguished_name]
+
+[ v3_req ]
+ENDOFTEXT
+)"
+
 # Command
 cmd="openssl req \
   -newkey rsa:${DEF_KEYSIZE} \
   -nodes \
   -extensions v3_req \
+  -config <(echo \"${OPENSSL_CONFIG}\") \
   -keyout ${KEY_FILE} \
   -subj '${SUBJECT}' \
   -out ${CSR_FILE}"

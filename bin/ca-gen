@@ -227,6 +227,20 @@ SUBJECT="${SUBJECT}/dnQualifier=${ca_dnq}"
 ### 3. Create CA
 ###
 
+OPENSSL_CONFIG="$( cat <<ENDOFTEXT
+[req]
+distinguished_name = req_distinguished_name
+
+[req_distinguished_name]
+
+[ v3_ca ]
+basicConstraints = critical, CA:TRUE
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer:always
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+ENDOFTEXT
+)"
+
 # Command
 cmd="openssl req \
   -new \
@@ -237,6 +251,7 @@ cmd="openssl req \
   -key ${CA_KEY_FILE} \
   -subj '${SUBJECT}' \
   -extensions v3_ca \
+  -config <(echo \"${OPENSSL_CONFIG}\") \
   -out ${CA_CRT_FILE}"
 
 # Trim newlines/whitespaces
