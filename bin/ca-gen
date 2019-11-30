@@ -24,7 +24,7 @@ DEF_VERBOSE=
 
 
 print_version() {
-	echo "${NAME} v0.6"
+	echo "${NAME} v0.7"
 }
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcslouev] <keyfile> <crtfile>"
@@ -228,7 +228,7 @@ SUBJECT="${SUBJECT}/dnQualifier=${ca_dnq}"
 ### 3. Create CA
 ###
 
-OPENSSL_CONFIG="$( cat <<ENDOFTEXT
+OPENSSL_CONFIG="$( cat <<'HEREDOC'
 [req]
 distinguished_name = req_distinguished_name
 
@@ -237,9 +237,9 @@ distinguished_name = req_distinguished_name
 [ v3_ca ]
 basicConstraints = critical, CA:TRUE
 subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer:always
 keyUsage = critical, digitalSignature, cRLSign, keyCertSign
-ENDOFTEXT
+authorityKeyIdentifier = keyid:always,issuer:always
+HEREDOC
 )"
 
 # Command
