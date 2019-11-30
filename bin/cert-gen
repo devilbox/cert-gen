@@ -27,7 +27,7 @@ DEF_VERBOSE=
 
 
 print_version() {
-	echo "${NAME} v0.4"
+	echo "${NAME} v0.5"
 }
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>"
@@ -284,6 +284,7 @@ fi
 # shellcheck disable=SC1117
 cmd="openssl x509 \
   -req \
+  -sha256 \
   -extensions v3_req \
   -extfile <(printf '[ req ]\nreq_extensions = v3_req\n[ v3_req ]\nsubjectAltName=${ALT_NAMES}\n') \
   -days ${DEF_DAYS} \
