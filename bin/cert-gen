@@ -28,7 +28,7 @@ DEF_VERBOSE=
 
 
 print_version() {
-	echo "${NAME} v0.6"
+	echo "${NAME} v0.7"
 }
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>"
@@ -238,7 +238,7 @@ fi
 ### 1. Key and Signing Request
 ###
 
-OPENSSL_CONFIG="$( cat <<ENDOFTEXT
+OPENSSL_CONFIG="$( cat <<'HEREDOC'
 [req]
 distinguished_name = req_distinguished_name
 x509_extensions = v3_req
@@ -246,7 +246,13 @@ x509_extensions = v3_req
 [req_distinguished_name]
 
 [ v3_req ]
-ENDOFTEXT
+basicConstraints = critical, CA:FALSE
+subjectKeyIdentifier = hash
+keyUsage = critical, digitalSignature, keyEncipherment
+authorityKeyIdentifier = keyid:always,issuer:always
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName=${ALT_NAMES}
+HEREDOC
 )"
 
 # Command
@@ -288,7 +294,7 @@ cmd="openssl x509 \
   -req \
   -${DEF_SIGN_SIGNATURE} \
   -extensions v3_req \
-  -extfile <(printf '[ req ]\nreq_extensions = v3_req\n[ v3_req ]\nsubjectAltName=${ALT_NAMES}\n') \
+  -extfile <(echo \"${OPENSSL_CONFIG}\") \
   -days ${DEF_DAYS} \
   -in ${CSR_FILE} \
   -CA ${CA_CRT_FILE} \

@@ -92,60 +92,64 @@ Certificate:
     Data:
         Version: 3 (0x2)
         Serial Number:
-            e3:a1:c0:ad:66:e3:9f:ae
-    Signature Algorithm: sha256WithRSAEncryption
-        Issuer: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = devilbox.org, emailAddress = ca@devilbox.org, dnQualifier = "1A8KSvbo+y7FW1H3dMZWUENkeec="
+            43:4a:c5:d2:87:cc:df:bd:f3:85:c7:9c:76:2e:52:d6:06:64:a5:83
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = devilbox.org, emailAddress = ca@devilbox.org, dnQualifier = "1R15BhvvsVfYNh+QeB/77jYmCQE="
         Validity
-            Not Before: May  1 09:22:09 2018 GMT
-            Not After : Apr 28 09:22:09 2028 GMT
-        Subject: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = devilbox.org, emailAddress = ca@devilbox.org, dnQualifier = "1A8KSvbo+y7FW1H3dMZWUENkeec="
+            Not Before: Nov 30 20:48:19 2019 GMT
+            Not After : Nov 27 20:48:19 2029 GMT
+        Subject: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = devilbox.org, emailAddress = ca@devilbox.org, dnQualifier = "1R15BhvvsVfYNh+QeB/77jYmCQE="
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
-                Public-Key: (2048 bit)
+                RSA Public-Key: (2048 bit)
                 Modulus:
-                    00:dd:a5:c1:e1:c9:89:33:66:dc:7a:e9:42:01:32:
-                    72:29:c9:bd:bf:85:96:9d:07:9b:98:79:95:23:23:
-                    3a:a8:ed:fe:88:86:88:e4:51:fa:40:bc:4f:9a:d5:
-                    c1:45:5f:71:ec:6c:d3:dd:35:ab:1a:7d:39:4f:04:
-                    ef:ef:14:b1:c9:a1:f2:14:cf:37:ab:55:4b:ae:ad:
-                    3d:32:c0:66:d5:1f:81:f0:4f:6c:28:96:c0:98:37:
-                    7a:ca:86:a5:93:7a:0d:d5:b3:83:cd:22:0f:26:5a:
-                    19:39:35:3a:82:ad:a6:13:de:b6:62:0a:bc:57:f2:
-                    01:31:c7:3a:ce:72:02:76:e6:fc:03:9e:c1:53:63:
-                    0f:ad:b3:2b:b0:fb:7e:84:c0:f9:d3:79:d9:23:a6:
-                    55:d6:3a:a8:b5:d6:01:2e:18:fe:97:a8:2c:91:cd:
-                    93:6e:ae:61:11:cb:57:38:9b:cc:1d:c8:41:8b:fa:
-                    bc:d8:34:bb:f8:0e:57:aa:ac:d8:50:e2:46:59:88:
-                    f7:7a:85:c2:08:ef:0e:35:99:66:ab:25:f6:83:4a:
-                    4d:72:11:8b:eb:61:45:6c:3c:fd:09:8d:83:66:c9:
-                    58:97:8a:99:27:20:b9:42:a7:d4:24:11:5e:6b:9c:
-                    0f:bb:37:7b:8f:79:9a:af:d6:b9:9a:0f:9a:39:c5:
-                    fa:99
+                    00:9a:ec:70:20:32:85:db:a9:cc:b7:87:08:f8:10:
+                    f8:2f:57:4d:3d:ca:f3:97:1a:b6:a2:20:9f:d8:a3:
+                    8b:15:4e:6e:92:5e:28:d6:c7:8b:de:da:9c:98:2f:
+                    23:c8:4e:ae:be:58:ec:14:a5:0d:76:4f:2c:bb:e2:
+                    22:93:d7:0e:d9:d4:5d:54:25:93:65:11:d7:fd:59:
+                    63:95:a5:85:98:da:20:4f:bc:d3:aa:d2:ca:d8:e6:
+                    19:de:9e:ca:da:a0:4f:b6:2d:93:6e:81:c0:b9:34:
+                    06:25:fd:62:75:83:96:42:12:46:93:53:01:04:17:
+                    53:18:e3:81:5e:26:20:3d:85:6d:a4:8b:93:ed:9e:
+                    2a:47:21:6e:54:5b:0c:11:de:a5:fd:eb:d6:37:d9:
+                    b0:49:72:8d:97:68:53:ef:27:69:78:b5:05:75:8a:
+                    8c:ad:a5:a1:e4:ab:04:88:42:b4:a4:d7:a8:91:99:
+                    e3:f5:32:85:55:df:ec:1f:86:83:03:0e:5b:21:16:
+                    17:bd:c7:71:7c:a3:8f:4b:e3:8d:ad:cc:0c:d9:6a:
+                    93:1e:3a:2c:4f:ee:1e:07:90:d3:46:f4:58:2a:f9:
+                    d0:41:68:c4:1d:30:2b:ab:3e:f4:4f:55:ba:37:0c:
+                    6f:1e:9c:30:d8:81:7e:a1:4e:bc:ae:8a:b2:e7:53:
+                    a3:ad
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
-            X509v3 Subject Key Identifier:
-                D4:0F:0A:4A:F6:E8:FB:2E:C5:5B:51:F7:74:C6:56:50:43:64:79:E7
-            X509v3 Authority Key Identifier:
-                keyid:D4:0F:0A:4A:F6:E8:FB:2E:C5:5B:51:F7:74:C6:56:50:43:64:79:E7
-
             X509v3 Basic Constraints: critical
                 CA:TRUE
+            X509v3 Subject Key Identifier:
+                D5:1D:79:06:1B:EF:B1:57:D8:36:1F:90:78:1F:FB:EE:36:26:09:01
+            X509v3 Key Usage: critical
+                Digital Signature, Certificate Sign, CRL Sign
+            X509v3 Authority Key Identifier:
+                keyid:D5:1D:79:06:1B:EF:B1:57:D8:36:1F:90:78:1F:FB:EE:36:26:09:01
+                DirName:/C=DE/ST=Berlin/L=Berlin/O=Devilbox/OU=Devilbox/CN=devilbox.org/emailAddress=ca@devilbox.org/dnQualifier=1R15BhvvsVfYNh+QeB/77jYmCQE=
+                serial:43:4A:C5:D2:87:CC:DF:BD:F3:85:C7:9C:76:2E:52:D6:06:64:A5:83
+
     Signature Algorithm: sha256WithRSAEncryption
-         3b:e7:b5:0f:ca:7a:74:f9:93:c2:59:45:f9:80:b1:6b:c5:22:
-         f3:93:c7:df:65:a0:f9:37:e2:d0:a6:15:56:4f:19:61:9d:e4:
-         6d:b4:88:d8:8c:40:6d:e7:63:03:89:4d:06:73:6a:c5:8b:ce:
-         3b:ab:f9:8f:c9:e7:fc:a6:13:88:ff:55:23:03:d5:17:e4:4c:
-         38:bf:bd:6c:62:f0:16:0e:3f:d9:64:83:09:f5:38:39:9b:4c:
-         64:33:c6:9c:a4:71:87:98:19:c4:44:ef:82:60:dc:13:8f:6e:
-         5e:0b:a5:22:b1:2e:26:93:cf:21:db:3b:7c:e2:9d:5c:15:db:
-         5f:ad:69:5b:66:f5:f0:55:75:b5:c2:ad:b4:56:77:af:4a:8d:
-         64:61:c1:d9:f0:4a:04:09:61:17:98:d7:1a:c5:e7:41:4e:99:
-         af:3a:86:ca:c4:63:f8:1a:55:c6:57:c1:38:40:de:7a:a8:9a:
-         7a:ba:26:39:8b:cc:57:db:a1:80:ec:ec:ed:2f:7f:5f:43:41:
-         b5:38:a2:3a:88:c8:f7:46:83:e2:2f:3b:64:af:24:a5:e1:af:
-         4d:dd:0a:02:11:21:8b:98:db:24:36:86:b1:b3:ce:57:5e:34:
-         ed:4f:0e:64:88:47:ea:f5:51:ba:a5:04:b8:b5:98:e4:4e:33:
-         c1:17:0f:0e
+         7b:6f:4c:56:ae:ef:76:f2:22:69:92:11:09:dd:67:85:5c:61:
+         a7:cb:3a:0b:6e:af:38:e5:72:33:c1:90:ae:31:2d:e6:74:93:
+         d3:7d:1e:e0:39:8d:d9:71:4a:bf:04:ba:07:37:99:92:ed:db:
+         cc:17:fc:f2:04:de:8b:ae:d1:2c:bc:84:fc:7a:c7:95:0a:4f:
+         44:00:88:11:2f:ce:b0:a8:c2:18:2c:86:5a:26:6d:a5:5e:fd:
+         41:33:52:c1:12:87:26:d2:9b:d4:87:70:58:d0:22:25:f1:47:
+         42:57:ca:68:b7:93:3e:0b:ee:9e:e7:24:36:de:a6:5c:eb:cf:
+         cb:a2:db:5d:d0:d4:35:b3:48:18:f2:96:8b:10:60:af:b8:5d:
+         22:ef:19:ed:a7:c9:7e:f5:b9:f8:ca:27:9a:f6:11:bf:b3:36:
+         12:35:99:f0:39:dd:5a:d2:f2:d6:48:b2:bf:59:8c:3d:ea:a2:
+         cf:56:7c:84:95:1c:1c:51:36:4c:5c:1a:d3:20:ed:5c:18:f7:
+         e5:4a:66:b7:5c:0d:a1:07:a6:d8:7f:4c:5a:b5:c2:fe:3d:d6:
+         49:fb:a6:3d:ed:e3:bc:47:3b:22:43:e8:91:31:dd:cd:9b:c2:
+         ad:d8:6b:01:ed:67:0f:c4:c0:c6:07:40:8b:50:a2:69:18:05:
+         3e:3e:85:09
 ```
 
 
@@ -201,55 +205,68 @@ Certificate:
     Data:
         Version: 3 (0x2)
         Serial Number:
-            ea:c2:f4:1b:69:c8:66:cd
-    Signature Algorithm: sha256WithRSAEncryption
-        Issuer: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = devilbox.org, emailAddress = ca@devilbox.org, dnQualifier = "1A8KSvbo+y7FW1H3dMZWUENkeec="
+            7a:70:c7:1f:31:f2:8c:69:03:5d:6e:5a:d6:5d:44:97:47:e1:b9:58
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = devilbox.org, emailAddress = ca@devilbox.org, dnQualifier = "1R15BhvvsVfYNh+QeB/77jYmCQE="
         Validity
-            Not Before: May  1 09:59:25 2018 GMT
-            Not After : Apr 28 09:59:25 2028 GMT
+            Not Before: Nov 30 20:50:11 2019 GMT
+            Not After : Mar  4 20:50:11 2022 GMT
         Subject: C = DE, ST = Berlin, L = Berlin, O = Devilbox, OU = Devilbox, CN = project.loc, emailAddress = admin@project.loc
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
-                Public-Key: (2048 bit)
+                RSA Public-Key: (2048 bit)
                 Modulus:
-                    00:d6:92:6f:27:72:a4:69:6a:5f:f8:11:5a:15:f0:
-                    fd:c6:e9:8e:e7:4c:38:5e:f9:d4:d0:79:26:6b:6e:
-                    c8:65:a1:2e:f1:3b:64:4e:b0:da:c4:42:02:87:70:
-                    10:bb:8f:46:08:aa:48:c2:01:b1:d2:10:8c:ce:6c:
-                    62:78:38:41:1a:83:4f:df:42:2e:d9:eb:7e:b1:67:
-                    76:10:a4:60:b2:a4:af:dd:2d:98:24:be:48:21:fd:
-                    c9:74:bc:2d:57:0f:26:15:a1:1f:cc:38:65:9f:26:
-                    74:08:1d:3f:b4:96:ed:7d:1a:b9:5a:c7:5e:bf:34:
-                    a8:fa:b6:c1:0b:38:e4:c7:78:3d:e3:7e:6e:a8:f5:
-                    24:bf:12:1c:9d:22:c9:ab:24:50:5b:88:3f:16:ac:
-                    fb:2a:b7:6e:da:1e:ec:34:56:60:ed:3c:f7:e0:08:
-                    76:23:8a:54:49:11:10:29:c8:4d:ed:4b:ef:66:45:
-                    7a:7d:cb:25:95:70:fd:07:2a:9b:88:a6:63:f1:b3:
-                    7b:9e:82:bf:a3:81:11:84:0c:71:ee:10:bf:bc:c8:
-                    6b:b2:7c:74:de:ac:ee:d8:04:3a:57:ff:aa:9e:7c:
-                    b1:4e:06:26:68:e6:c2:0c:73:74:a2:72:91:7a:0d:
-                    e9:80:03:e8:b1:ec:0a:fc:19:59:26:e8:2c:2f:8f:
-                    de:97
+                    00:ab:a7:0b:41:cd:5a:00:66:6f:94:15:3b:e5:f1:
+                    18:84:38:48:3e:6b:7f:0a:c3:4e:51:58:0b:c9:f5:
+                    85:86:ff:61:69:ea:b8:11:5a:b9:9f:97:c5:22:2a:
+                    d1:f6:91:21:6e:01:ab:46:01:8c:4b:80:ba:74:a7:
+                    ce:5f:5b:a1:ac:a3:e6:0f:ce:19:1c:ae:68:a3:60:
+                    f9:f9:82:c1:ea:d3:eb:e5:84:1d:0c:9c:4d:94:82:
+                    d2:ef:3d:89:ab:0e:15:01:c3:22:8e:cd:7a:49:ae:
+                    37:9c:39:9d:40:d1:19:8d:13:3a:a6:36:e4:71:1a:
+                    8a:10:b3:ca:b1:b2:a0:a0:e5:5d:ff:39:f9:7b:70:
+                    85:01:bd:8f:3b:ce:92:ae:c9:6d:9c:f9:6f:99:5a:
+                    e9:da:bb:28:95:01:9c:40:92:23:f0:1f:68:a3:a7:
+                    d5:fc:ac:44:9a:95:63:bd:5b:6e:bd:c2:19:0e:56:
+                    ab:47:40:57:90:74:d9:25:2e:75:b1:98:b1:82:8e:
+                    f7:4c:b2:42:fb:a5:3c:71:14:8d:55:da:a3:00:8a:
+                    85:ce:45:91:15:8c:35:86:3f:eb:9f:d7:68:15:bf:
+                    24:e7:96:49:90:d4:69:71:20:89:c0:c0:c2:cd:63:
+                    d0:66:38:1e:f6:60:d3:24:64:63:36:c0:19:51:23:
+                    23:ad
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
+            X509v3 Basic Constraints: critical
+                CA:FALSE
+            X509v3 Subject Key Identifier:
+                64:AE:B5:56:82:FE:E8:92:BF:9C:E0:F4:27:3D:20:79:21:CA:B4:5D
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Authority Key Identifier:
+                keyid:D5:1D:79:06:1B:EF:B1:57:D8:36:1F:90:78:1F:FB:EE:36:26:09:01
+                DirName:/C=DE/ST=Berlin/L=Berlin/O=Devilbox/OU=Devilbox/CN=devilbox.org/emailAddress=ca@devilbox.org/dnQualifier=1R15BhvvsVfYNh+QeB/77jYmCQE=
+                serial:43:4A:C5:D2:87:CC:DF:BD:F3:85:C7:9C:76:2E:52:D6:06:64:A5:83
+
+            X509v3 Extended Key Usage:
+                TLS Web Server Authentication, TLS Web Client Authentication
             X509v3 Subject Alternative Name:
                 DNS:project.loc, DNS:*.project.loc, DNS:*.www.project.loc
     Signature Algorithm: sha256WithRSAEncryption
-         59:4b:33:4c:99:7c:20:e1:92:ba:cb:0a:27:6f:da:be:ed:17:
-         ce:cf:f5:18:95:bf:a3:fa:a2:b9:0b:43:cb:a9:90:67:ec:17:
-         fe:15:96:57:90:00:e7:a3:92:c4:5d:9f:e3:06:38:75:33:7d:
-         27:35:a3:91:99:3d:60:3d:85:62:86:c1:a5:77:ae:d1:bb:95:
-         b0:b7:7f:74:b8:1a:f8:09:32:8c:1e:0a:6e:0d:1b:51:8b:bb:
-         bd:58:78:b6:4d:89:8c:18:1c:0b:77:43:8c:9d:ee:53:3c:1f:
-         ab:52:da:99:d3:87:e0:c9:0b:b8:28:29:08:de:1b:7f:69:eb:
-         14:1a:fe:0d:5c:c4:ca:f0:56:ec:48:af:4a:21:38:1e:f6:23:
-         7c:c8:05:d8:d8:9b:1e:f3:59:3a:a3:37:b9:ce:a8:af:5a:2d:
-         72:d1:94:71:34:94:c1:fd:6f:c0:27:c4:9b:3d:59:0b:02:20:
-         12:c7:35:de:c0:bd:7a:38:04:0f:41:ed:36:bd:75:27:cb:64:
-         8d:0a:cf:39:29:7e:59:36:39:07:5e:70:46:9f:63:a1:33:62:
-         8d:27:50:3a:62:96:b0:5b:97:c4:3e:6c:e4:5b:71:bc:92:bf:
-         45:d5:31:25:eb:f2:65:17:7c:96:fe:5c:94:aa:72:f6:fd:9c:
-         02:db:c7:03
+         02:73:0d:df:49:da:d0:19:35:c2:fb:1d:99:81:aa:3a:48:51:
+         1e:2e:f4:de:50:73:71:17:0c:6d:83:9e:b1:2c:1d:b5:58:c9:
+         db:f0:a9:9c:db:dc:42:29:37:be:5b:59:4a:04:92:3e:da:5f:
+         10:97:ff:6e:d3:23:a1:6a:6f:c9:3f:b5:61:87:6b:a7:e8:ab:
+         72:a2:6e:eb:12:e9:89:71:b8:de:7c:63:62:e0:8e:9a:82:b1:
+         ae:96:67:8a:20:63:2b:75:18:1a:04:36:ed:1e:8c:b5:16:d2:
+         d4:77:05:5b:54:ee:d8:c4:25:6d:fb:02:2c:dc:e0:dc:2d:37:
+         99:71:66:f8:06:24:ff:69:69:50:b1:10:f2:c5:ff:96:28:75:
+         8a:e3:78:3c:7c:38:a9:1c:20:3e:1f:f5:dc:d3:ec:3b:ae:ac:
+         f4:14:45:16:aa:3f:db:eb:ae:b8:1d:0d:4a:76:cb:02:eb:c1:
+         00:e2:42:60:90:18:82:8e:3d:01:6b:1f:78:de:d9:a4:7a:df:
+         71:1e:aa:7e:7b:87:2c:af:ce:47:5d:be:1f:6a:4c:cd:10:67:
+         4e:41:c8:ca:90:fe:ac:2d:a1:92:e5:34:ea:da:ed:d9:9e:2d:
+         ac:38:81:7d:13:5b:0f:cd:e8:a7:99:a0:1f:54:29:10:64:19:
+         b6:1a:14:ab
 ```
 
 
