@@ -9,6 +9,7 @@ NAME="ca-gen"
 # Generate default options
 DEF_KEYSIZE=2048
 DEF_DAYS=3650
+DEF_SIGN_SIGNATURE="sha256"
 # Subject default options
 DEF_COUNTRY=
 DEF_STATE=
@@ -23,7 +24,7 @@ DEF_VERBOSE=
 
 
 print_version() {
-	echo "${NAME} v0.5"
+	echo "${NAME} v0.6"
 }
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcslouev] <keyfile> <crtfile>"
@@ -246,7 +247,7 @@ cmd="openssl req \
   -new \
   -x509 \
   -nodes \
-  -sha256 \
+  -${DEF_SIGN_SIGNATURE} \
   -days ${DEF_DAYS} \
   -key ${CA_KEY_FILE} \
   -subj '${SUBJECT}' \
