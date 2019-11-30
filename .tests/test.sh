@@ -212,6 +212,7 @@ if [ "${USE_DOCKER}" = "1" ]; then
 		ERROR=1
 	fi
 
+	echo
 	echo "[INFO] Validating openssl certificate with openssl client"
 	if ! run "echo | openssl s_client -verify 8 -CAfile ${CA_CRT_PATH} | grep 'Verify return code: 0 (ok)'" "60"; then
 		ERROR=1
@@ -233,6 +234,7 @@ else
 	echo "[INFO] Ensuring OpenSSL server is not running"
 	run "ps aux | grep openssl | grep s_server | awk '{print \$2}' | xargs kill 2>/dev/null || true"
 
+	echo
 	echo "[INFO] Starting OpenSSL server"
 	run "openssl s_server -key ${CERT_KEY_PATH} -cert ${CERT_CRT_PATH} -CAfile ${CA_CRT_PATH} -accept ${OPENSSL_PORT} -www >/dev/null &"
 
