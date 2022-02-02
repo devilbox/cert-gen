@@ -53,8 +53,8 @@ install:
 	${MKDIR_P} /usr/local/bin
 
 	@# Install binary
-	install -m 0755 bin/ca-gen /usr/local/bin/ca-gen
-	install -m 0755 bin/cert-gen /usr/local/bin/cert-gen
+	install -m 0755 bin/ca-gen ~/.local/bin/ca-gen
+	install -m 0755 bin/cert-gen ~/.local/bin/cert-gen
 
 
 	@echo "Installation complete:"

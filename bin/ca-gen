@@ -11,13 +11,13 @@ DEF_KEYSIZE=2048
 DEF_DAYS=3650
 DEF_SIGN_SIGNATURE="sha256"
 # Subject default options
-DEF_COUNTRY=
-DEF_STATE=
-DEF_CITY=
-DEF_ORG=
-DEF_UNIT=
-DEF_CN=
-DEF_EMAIL=
+DEF_COUNTRY=MU
+DEF_STATE=GP
+DEF_CITY=Mahebourg
+DEF_ORG=Tricky-bit
+DEF_UNIT=IT
+DEF_CN=tricky-bit.int
+DEF_EMAIL=thiery.louison@gmail.com
 
 # Verbosity
 DEF_VERBOSE=
