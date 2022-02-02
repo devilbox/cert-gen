@@ -55,6 +55,7 @@ install:
 	@# Install binary
 	install -m 0755 bin/ca-gen ~/.local/bin/ca-gen
 	install -m 0755 bin/cert-gen ~/.local/bin/cert-gen
+	install -m 0755 bin/cert-gen ~/.local/bin/configs
 
 
 	@echo "Installation complete:"

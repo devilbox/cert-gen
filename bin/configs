@@ -1,0 +1,17 @@
+# Generate default options
+DEF_KEYSIZE=4096
+DEF_DAYS=3650
+DEF_SIGN_SIGNATURE="sha256"
+# Subject default options
+DEF_COUNTRY=MU
+DEF_STATE=GP
+DEF_CITY=Mahebourg
+DEF_ORG=Tricky-bit
+DEF_UNIT=IT
+DEF_CN=tricky-bit.int
+DEF_EMAIL=thiery.louison@gmail.com
+# v3 subject alt names
+DEF_ALT_NAME=trick-bit.int
+DEF_ALT_IP_NAME=
+
+
