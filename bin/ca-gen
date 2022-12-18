@@ -5,6 +5,8 @@ set -u
 set -o pipefail
 
 NAME="ca-gen"
+VERSION="v0.10"
+DATE="2022-12-18"
 
 # Generate default options
 # DEF_KEYSIZE=2048
@@ -22,10 +24,28 @@ source ~/.local/bin/configs
 # Verbosity
 DEF_VERBOSE=
 
+log() {
+	local type="${1}"      # err, warn, info
+	local message="${2}"   # message to log
+
+	if [ "${type}" = "err" ]; then
+		printf "%s: [ERR]  %s\n" "${NAME}" "${message}" 1>&2	# stdout -> stderr
+	fi
+	if [ "${type}" = "warn" ]; then
+		printf "%s: [WARN] %s\n" "${NAME}" "${message}" 1>&2	# stdout -> stderr
+	fi
+	if [ "${DEF_VERBOSE:-}" = "1" ]; then
+		if [ "${type}" = "info" ]; then
+			printf "%s: [INFO] %s\n" "${NAME}" "${message}"
+		fi
+	fi
+}
 
 print_version() {
-	echo "${NAME} v0.7"
+	echo "${NAME}: Version ${VERSION} (${DATE}) by cytopia"
+	echo "https://github.com/devilbox/cert-gen/"
 }
+
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcslouev] <keyfile> <crtfile>"
 	echo "       ${NAME} --help"
@@ -74,46 +94,82 @@ while [ ${#} -gt 0 ]; do
 		# ---- Options
 		-k)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -k requires an argument."
+				exit 1
+			fi
 			DEF_KEYSIZE="${1}"
 			shift
 			;;
 		-d)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -d requires an argument."
+				exit 1
+			fi
 			DEF_DAYS="${1}"
 			shift
 			;;
 		-c)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -c requires an argument."
+				exit 1
+			fi
 			DEF_COUNTRY="${1}"
 			shift
 			;;
 		-s)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -s requires an argument."
+				exit 1
+			fi
 			DEF_STATE="${1}"
 			shift
 			;;
 		-l)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -l requires an argument."
+				exit 1
+			fi
 			DEF_CITY="${1}"
 			shift
 			;;
 		-o)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -o requires an argument."
+				exit 1
+			fi
 			DEF_ORG="${1}"
 			shift
 			;;
 		-u)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -u requires an argument."
+				exit 1
+			fi
 			DEF_UNIT="${1}"
 			shift
 			;;
 		-n)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -n requires an argument."
+				exit 1
+			fi
 			DEF_CN="${1}"
 			shift
 			;;
 		-e)
 			shift
+			if [ -z "${1:-}" ]; then
+				log "err" "Usage: -e requires an argument."
+				exit 1
+			fi
 			DEF_EMAIL="${1}"
 			shift
 			;;
@@ -123,7 +179,7 @@ while [ ${#} -gt 0 ]; do
 			break
 			;;
 		-*) # Unknown option
-			>&2 echo "Error: Unknown option: ${1}"
+			log "err" "Usage: Unknown option: ${1}"
 			exit 1
 			;;
 		*)  # No more options
@@ -138,12 +194,12 @@ done
 ################################################################################
 
 if [ -z "${DEF_CN}" ]; then
-	>&2 echo "Error: -n is required. See --help for help."
+	log "err" "Usage: -n is required. See --help for help."
 	exit 1
 fi
 
 if [ "${#}" -lt "2" ]; then
-	>&2 echo "Error: <keyfile> and <crtfile> are required. See --help for help."
+	log "err" "Usage: <keyfile> and <crtfile> are required. See --help for help."
 	exit 1
 fi
 
@@ -199,17 +255,12 @@ cmd="openssl genrsa \
 # Trim newlines/whitespaces
 cmd="$( echo "${cmd}" | tr -s " " )"
 
-# Debug
-if [ "${DEF_VERBOSE}" = "1" ]; then
-	echo "\$ ${cmd}"
-fi
 
 # Execute
+log "info" "Create CA KEY file: ${CA_KEY_FILE}"
 if ! out="$( eval "${cmd}" 2>&1 )"; then
-	if [ -z "${DEF_VERBOSE}" ]; then
-		echo "\$ ${cmd}"
-	fi
-	>&2 echo "${out}"
+	log "err" "Command: ${cmd}"
+	log "err" "Output: ${out}"
 	exit 1
 fi
 
@@ -258,17 +309,12 @@ cmd="openssl req \
 # Trim newlines/whitespaces
 cmd="$( echo "${cmd}" | tr -s " " )"
 
-# Debug
-if [ "${DEF_VERBOSE}" = "1" ]; then
-	echo "\$ ${cmd}"
-fi
 
 # Execute
+log "info" "Create CA CRT file: ${CA_CRT_FILE}"
 if ! out="$( eval "${cmd}" 2>&1 )"; then
-	if [ -z "${DEF_VERBOSE}" ]; then
-		echo "\$ ${cmd}"
-	fi
-	>&2 echo "${out}"
+	log "err" "Command: ${cmd}"
+	log "err" "Output: ${out}"
 	exit 1
 fi
 
@@ -276,18 +322,14 @@ fi
 ###
 ### 4. Validate
 ###
+log "info" "Verify CA CRT file: ${CA_CRT_FILE}"
 if ! out="$( openssl x509 -in "${CA_CRT_FILE}" -text )"; then
-	echo "${out}"
+	log "err" "CA CRT verification failed: ${out}"
 	exit 1
-fi
-if [ "${DEF_VERBOSE}" = "1" ]; then
-	echo "${out}"
 fi
 
+log "info" "Verify CA CRT issuer"
 if ! out="$( openssl x509 -noout -subject -issuer -in "${CA_CRT_FILE}" )"; then
-	echo "${out}"
+	log "err" "CA CRT issuer failed: ${out}"
 	exit 1
-fi
-if [ "${DEF_VERBOSE}" = "1" ]; then
-	echo "${out}"
 fi
