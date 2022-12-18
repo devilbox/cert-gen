@@ -1,0 +1,30 @@
+---
+name: test-windows
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: False
+
+    name: "[test] [windows]"
+    steps:
+      # ------------------------------------------------------------
+      # Setup
+      # ------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # ------------------------------------------------------------
+      # Tests: Behaviour
+      # ------------------------------------------------------------
+      - name: test
+        shell: bash
+        run: |
+          make test

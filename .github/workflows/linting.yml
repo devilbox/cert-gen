@@ -1,0 +1,30 @@
+---
+
+###
+### Lints all generic and json files in the whole git repository
+###
+
+name: linting
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: False
+      matrix:
+        target:
+          - Linting
+    name: "[ ${{ matrix.target }} ]"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Lint files
+        run: |
+          make lint
