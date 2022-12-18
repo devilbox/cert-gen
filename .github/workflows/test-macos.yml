@@ -1,0 +1,30 @@
+---
+name: test-macos
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+
+jobs:
+  test:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: False
+
+    name: "[test] [macos]"
+    steps:
+      # ------------------------------------------------------------
+      # Setup
+      # ------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # ------------------------------------------------------------
+      # Tests: Behaviour
+      # ------------------------------------------------------------
+      - name: test
+        shell: bash
+        run: |
+          make test

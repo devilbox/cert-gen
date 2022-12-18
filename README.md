@@ -1,9 +1,13 @@
 # cert-gen
 
-[![Build Status](https://travis-ci.org/devilbox/cert-gen.svg?branch=master)](https://travis-ci.org/devilbox/cert-gen)
-[![Discord](https://img.shields.io/discord/1051541389256704091?color=8c9eff&label=Discord&logo=discord)](https://discord.gg/2wP3V6kBj4)
 ![Tag](https://img.shields.io/github/tag/devilbox/cert-gen.svg)
+[![Discord](https://img.shields.io/discord/1051541389256704091?color=8c9eff&label=Discord&logo=discord)](https://discord.gg/2wP3V6kBj4)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+[![linting](https://github.com/devilbox/cert-gen/workflows/linting/badge.svg)](https://github.com/devilbox/cert-gen/actions/workflows/linting.yml)
+[![test-linux](https://github.com/devilbox/cert-gen/workflows/test-linux/badge.svg)](https://github.com/devilbox/cert-gen/actions/workflows/test-linux.yml)
+[![test-macos](https://github.com/devilbox/cert-gen/workflows/test-macos/badge.svg)](https://github.com/devilbox/cert-gen/actions/workflows/test-macos.yml)
+[![test-windows](https://github.com/devilbox/cert-gen/workflows/test-windows/badge.svg)](https://github.com/devilbox/cert-gen/actions/workflows/test-windows.yml)
 
 Easily create your own CA and self-signed certificates.
 

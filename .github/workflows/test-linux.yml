@@ -1,0 +1,30 @@
+---
+name: test-linux
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: False
+
+    name: "[test] [linux]"
+    steps:
+      # ------------------------------------------------------------
+      # Setup
+      # ------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # ------------------------------------------------------------
+      # Tests: Behaviour
+      # ------------------------------------------------------------
+      - name: test
+        shell: bash
+        run: |
+          make test
