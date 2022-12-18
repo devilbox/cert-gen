@@ -24,7 +24,7 @@ DEF_VERBOSE=
 
 
 print_version() {
-	echo "${NAME} v0.7"
+	echo "${NAME} v0.8"
 }
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcslouev] <keyfile> <crtfile>"
@@ -74,46 +74,82 @@ while [ ${#} -gt 0 ]; do
 		# ---- Options
 		-k)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -k requires an argument."
+				exit 1
+			fi
 			DEF_KEYSIZE="${1}"
 			shift
 			;;
 		-d)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -d requires an argument."
+				exit 1
+			fi
 			DEF_DAYS="${1}"
 			shift
 			;;
 		-c)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -c requires an argument."
+				exit 1
+			fi
 			DEF_COUNTRY="${1}"
 			shift
 			;;
 		-s)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -s requires an argument."
+				exit 1
+			fi
 			DEF_STATE="${1}"
 			shift
 			;;
 		-l)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -l requires an argument."
+				exit 1
+			fi
 			DEF_CITY="${1}"
 			shift
 			;;
 		-o)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -o requires an argument."
+				exit 1
+			fi
 			DEF_ORG="${1}"
 			shift
 			;;
 		-u)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -u requires an argument."
+				exit 1
+			fi
 			DEF_UNIT="${1}"
 			shift
 			;;
 		-n)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -n requires an argument."
+				exit 1
+			fi
 			DEF_CN="${1}"
 			shift
 			;;
 		-e)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -e requires an argument."
+				exit 1
+			fi
 			DEF_EMAIL="${1}"
 			shift
 			;;
@@ -123,7 +159,7 @@ while [ ${#} -gt 0 ]; do
 			break
 			;;
 		-*) # Unknown option
-			>&2 echo "Error: Unknown option: ${1}"
+			>&2 echo "${NAME}: Error: Unknown option: ${1}"
 			exit 1
 			;;
 		*)  # No more options
@@ -138,12 +174,12 @@ done
 ################################################################################
 
 if [ -z "${DEF_CN}" ]; then
-	>&2 echo "Error: -n is required. See --help for help."
+	>&2 echo "${NAME}: Error: -n is required. See --help for help."
 	exit 1
 fi
 
 if [ "${#}" -lt "2" ]; then
-	>&2 echo "Error: <keyfile> and <crtfile> are required. See --help for help."
+	>&2 echo "${NAME}: Error: <keyfile> and <crtfile> are required. See --help for help."
 	exit 1
 fi
 

@@ -28,7 +28,7 @@ DEF_VERBOSE=
 
 
 print_version() {
-	echo "${NAME} v0.7"
+	echo "${NAME} v0.8"
 }
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>"
@@ -83,56 +83,100 @@ while [ ${#} -gt 0 ]; do
 		# ---- Options
 		-k)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -k requires an argument."
+				exit 1
+			fi
 			DEF_KEYSIZE="${1}"
 			shift
 			;;
 		-d)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -d requires an argument."
+				exit 1
+			fi
 			DEF_DAYS="${1}"
 			shift
 			;;
 		-c)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -c requires an argument."
+				exit 1
+			fi
 			DEF_COUNTRY="${1}"
 			shift
 			;;
 		-s)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -s requires an argument."
+				exit 1
+			fi
 			DEF_STATE="${1}"
 			shift
 			;;
 		-l)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -l requires an argument."
+				exit 1
+			fi
 			DEF_CITY="${1}"
 			shift
 			;;
 		-o)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -o requires an argument."
+				exit 1
+			fi
 			DEF_ORG="${1}"
 			shift
 			;;
 		-u)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -u requires an argument."
+				exit 1
+			fi
 			DEF_UNIT="${1}"
 			shift
 			;;
 		-n)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -n requires an argument."
+				exit 1
+			fi
 			DEF_CN="${1}"
 			shift
 			;;
 		-e)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -e requires an argument."
+				exit 1
+			fi
 			DEF_EMAIL="${1}"
 			shift
 			;;
 		-a)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -a requires an argument."
+				exit 1
+			fi
 			DEF_ALT_NAME="${1}"
 			shift
 			;;
 		-i)
 			shift
+			if [ -z "${1:-}" ]; then
+				>&2 echo "${NAME}: Error: -i requires an argument."
+				exit 1
+			fi
 			DEF_ALT_IP_NAME="${1}"
 			shift
 			;;
@@ -142,7 +186,7 @@ while [ ${#} -gt 0 ]; do
 			break
 			;;
 		-*) # Unknown option
-			>&2 echo "Error: Unknown option: ${1}"
+			>&2 echo "${NAME}: Error: Unknown option: ${1}"
 			exit 1
 			;;
 		*)  # No more options
@@ -157,12 +201,12 @@ done
 ################################################################################
 
 if [ -z "${DEF_CN}" ]; then
-	>&2 echo "Error: -n is required. See --help for help."
+	>&2 echo "${NAME}: Error: -n is required. See --help for help."
 	exit 1
 fi
 
 if [ "${#}" -lt "5" ]; then
-	>&2 echo "Error: <ca-key> <ca-crt> <key> <csr> and <crt> are required. See --help for help."
+	>&2 echo "${NAME}: Error: <ca-key> <ca-crt> <key> <csr> and <crt> are required. See --help for help."
 	exit 1
 fi
 
@@ -173,11 +217,11 @@ CSR_FILE="${4}"
 CRT_FILE="${5}"
 
 if [ ! -f "${CA_KEY_FILE}" ]; then
-	>&2 echo "Error: <ca-key> file does not exist in: ${CA_KEY_FILE}"
+	>&2 echo "${NAME}: Error: <ca-key> file does not exist in: ${CA_KEY_FILE}"
 	exit 1
 fi
 if [ ! -f "${CA_CRT_FILE}" ]; then
-	>&2 echo "Error: <ca-crt> file does not exist in: ${CA_CRT_FILE}"
+	>&2 echo "${NAME}: Error: <ca-crt> file does not exist in: ${CA_CRT_FILE}"
 	exit 1
 fi
 
