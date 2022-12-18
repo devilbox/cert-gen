@@ -5,7 +5,7 @@ set -u
 set -o pipefail
 
 NAME="cert-gen"
-VERSION="v0.9"
+VERSION="v0.10"
 DATE="2022-12-18"
 
 # Generate default options
@@ -33,14 +33,14 @@ log() {
 	local message="${2}"   # message to log
 
 	if [ "${type}" = "err" ]; then
-		printf "%s: [ERROR] %s\n" "${NAME}" "${message}" 1>&2	# stdout -> stderr
+		printf "%s: [ERR]  %s\n" "${NAME}" "${message}" 1>&2	# stdout -> stderr
 	fi
 	if [ "${type}" = "warn" ]; then
-		printf "%s: [WARN]  %s\n" "${NAME}" "${message}" 1>&2	# stdout -> stderr
+		printf "%s: [WARN] %s\n" "${NAME}" "${message}" 1>&2	# stdout -> stderr
 	fi
 	if [ "${DEF_VERBOSE:-}" = "1" ]; then
 		if [ "${type}" = "info" ]; then
-			printf "%s: [INFO]  %s\n" "${NAME}" "${message}"
+			printf "%s: [INFO] %s\n" "${NAME}" "${message}"
 		fi
 	fi
 }
