@@ -9,22 +9,22 @@ VERSION="v0.10"
 DATE="2022-12-18"
 
 # Generate default options
-DEF_KEYSIZE=2048
-DEF_DAYS=825
-DEF_SIGN_SIGNATURE="sha256"
-# Subject default options
-DEF_COUNTRY=
-DEF_STATE=
-DEF_CITY=
-DEF_ORG=
-DEF_UNIT=
-DEF_CN=
-DEF_EMAIL=
+# DEF_KEYSIZE=2048
+# DEF_DAYS=825
+# DEF_SIGN_SIGNATURE="sha256"
+# # Subject default options
+# DEF_COUNTRY=MU
+# DEF_STATE=GP
+# DEF_CITY=Mahebourg
+# DEF_ORG=Tricky-Bit
+# DEF_UNIT=IT
+# DEF_CN=tricky-bit.int
+# DEF_EMAIL=thiery.louison@gmail.com
 
 # v3 subject alt names
-DEF_ALT_NAME=
-DEF_ALT_IP_NAME=
-
+# DEF_ALT_NAME=trick-bit.int
+# DEF_ALT_IP_NAME=
+source ~/.local/bin/configs
 # Verbosity
 DEF_VERBOSE=
 

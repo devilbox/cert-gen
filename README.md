@@ -19,46 +19,73 @@ All subsequent created certificates will then be valid SSL certificates to each 
 **Table of Contents**
 
 1. [Available Tools](#available-tools)
-    1. [Tools](#tools)
-    2. [Requirements](#requirements)
-    3. [Installation](#installation)
+   1. [Tools](#tools)
+   2. [Requirements](#requirements)
+   3. [Installation](#installation)
 2. [Create Certificate Authoriy](#create-certificate-authority)
-    1. [Usage: ca-gen](#usage-ca-gen)
-    2. [Execute: ca-gen](#execute-ca-gen)
-    3. [Example: CA](#example-ca)
+   1. [Configuration](#config)
+   2. [Usage: ca-gen](#usage-ca-gen)
+   3. [Execute: ca-gen](#execute-ca-gen)
+   4. [Example: CA](#example-ca)
 3. [Create SSL Certificate](#create-ssl-certificate)
-    1. [Usage: cert-gen](#usage-cert-gen)
-    2. [Execute: cert-gen](#execute-cert-gen)
-    3. [Example: SSL certificate](#example-ssl-certificate)
+   1. [Usage: cert-gen](#usage-cert-gen)
+   2. [Execute: cert-gen](#execute-cert-gen)
+   3. [Example: SSL certificate](#example-ssl-certificate)
 4. [Import CA into Chrome](#import-ca-into-chrome)
 5. [License](#license)
 
-----
+---
 
 ## Available Tools
 
 #### Tools
 
-| Tools                    | Description |
-|--------------------------|-------------|
-| [ca-gen](bin/ca-gen)     | Creates a certificate authority |
+| Tools                    | Description                                                |
+| ------------------------ | ---------------------------------------------------------- |
+| [ca-gen](bin/ca-gen)     | Creates a certificate authority                            |
 | [cert-gen](bin/cert-gen) | Creates SSL certificates signed by a certificate authority |
 
 #### Requirements
 
-* `openssl`
-* `bash`
+- `openssl`
+- `bash`
 
 #### Installation
+
 ```bash
 $ sudo make install
 ```
 
+#### Configuration
+
+#### config
+
+update the following file(~/.local/bin/configs)
+
+```bash
+# Generate default options
+DEF_KEYSIZE=4096
+DEF_DAYS=3650
+DEF_SIGN_SIGNATURE="sha256"
+# Subject default options
+DEF_COUNTRY=MU
+DEF_STATE=GP
+DEF_CITY=Mahebourg
+DEF_ORG=Tricky-bit
+DEF_UNIT=IT
+DEF_CN=tricky-bit.int
+DEF_EMAIL=thiery.louison@gmail.com
+# v3 subject alt names
+DEF_ALT_NAME=trick-bit.int
+DEF_ALT_IP_NAME=
+```
 
 ## Create Certificate Authority
 
 #### Usage: ca-gen
+
 The following shows the general usage for `ca-gen`:
+
 ```bash
 USAGE: ca-gen -n CN [-kdcslouev] <keyfile> <crtfile>
        ca-gen --help
@@ -84,13 +111,16 @@ Required parameter
 ```
 
 #### Execute: ca-gen
+
 The following command shows how the CA is generated for the [Devilbox](https://github.com/cytopia/devilbox):
+
 ```bash
 $ ca-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox -n devilbox.org \
        -e ca@devilbox.org devilbox-rootCA.key devilbox-rootCA.crt
 ```
 
 #### Example: CA
+
 ```bash
 Certificate:
     Data:
@@ -156,11 +186,12 @@ Certificate:
          3e:3e:85:09
 ```
 
-
 ## Create SSL Certificate
 
 #### Usage: cert-gen
+
 The following shows the general usage for cert-gen:
+
 ```bash
 USAGE: cert-gen -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>
        cert-gen --help
@@ -191,7 +222,9 @@ Required parameter
 ```
 
 #### Execute: cert-gen
+
 The following command shows how SSL certificates are generated for the [Devilbox](https://github.com/cytopia/devilbox):
+
 ```bash
 $ cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox \
            -n project.loc -e admin@project.loc \
@@ -204,6 +237,7 @@ $ cert-gen -v -c DE -s Berlin -l Berlin -o Devilbox -u Devilbox \
 ```
 
 #### Example: SSL Certificate
+
 ```bash
 Certificate:
     Data:
@@ -273,7 +307,6 @@ Certificate:
          b6:1a:14:ab
 ```
 
-
 ## Import CA into Chrome
 
 **1. Open Chrome settings - scroll down and click `Advanced`**
@@ -295,7 +328,6 @@ Certificate:
 **5. Check all boxes**
 
 <img width="600" style="width:600px;" src="img/05-set-trust.png" />
-
 
 ## License
 
