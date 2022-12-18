@@ -5,6 +5,8 @@ set -u
 set -o pipefail
 
 NAME="cert-gen"
+VERSION="v0.9"
+DATE="2022-12-18"
 
 # Generate default options
 DEF_KEYSIZE=2048
@@ -26,10 +28,28 @@ DEF_ALT_IP_NAME=
 # Verbosity
 DEF_VERBOSE=
 
+log() {
+	local type="${1}"      # err, warn, info
+	local message="${2}"   # message to log
+
+	if [ "${type}" = "err" ]; then
+		printf "%s: [ERROR] %s\n" "${NAME}" "${message}" 1>&2	# stdout -> stderr
+	fi
+	if [ "${type}" = "warn" ]; then
+		printf "%s: [WARN]  %s\n" "${NAME}" "${message}" 1>&2	# stdout -> stderr
+	fi
+	if [ "${DEF_VERBOSE:-}" = "1" ]; then
+		if [ "${type}" = "info" ]; then
+			printf "%s: [INFO]  %s\n" "${NAME}" "${message}"
+		fi
+	fi
+}
 
 print_version() {
-	echo "${NAME} v0.8"
+	echo "${NAME}: Version ${VERSION} (${DATE}) by cytopia"
+	echo "https://github.com/devilbox/cert-gen/"
 }
+
 print_help() {
 	echo "USAGE: ${NAME} -n CN [-kdcsloueav] <ca-key> <ca-crt> <key> <csr> <crt>"
 	echo "       ${NAME} --help"
@@ -84,7 +104,7 @@ while [ ${#} -gt 0 ]; do
 		-k)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -k requires an argument."
+				log "err" "Usage: -k requires an argument."
 				exit 1
 			fi
 			DEF_KEYSIZE="${1}"
@@ -93,7 +113,7 @@ while [ ${#} -gt 0 ]; do
 		-d)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -d requires an argument."
+				log "err" "Usage: -d requires an argument."
 				exit 1
 			fi
 			DEF_DAYS="${1}"
@@ -102,7 +122,7 @@ while [ ${#} -gt 0 ]; do
 		-c)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -c requires an argument."
+				log "err" "Usage: -c requires an argument."
 				exit 1
 			fi
 			DEF_COUNTRY="${1}"
@@ -111,7 +131,7 @@ while [ ${#} -gt 0 ]; do
 		-s)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -s requires an argument."
+				log "err" "Usage: -s requires an argument."
 				exit 1
 			fi
 			DEF_STATE="${1}"
@@ -120,7 +140,7 @@ while [ ${#} -gt 0 ]; do
 		-l)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -l requires an argument."
+				log "err" "Usage: -l requires an argument."
 				exit 1
 			fi
 			DEF_CITY="${1}"
@@ -129,7 +149,7 @@ while [ ${#} -gt 0 ]; do
 		-o)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -o requires an argument."
+				log "err" "Usage: -o requires an argument."
 				exit 1
 			fi
 			DEF_ORG="${1}"
@@ -138,7 +158,7 @@ while [ ${#} -gt 0 ]; do
 		-u)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -u requires an argument."
+				log "err" "Usage: -u requires an argument."
 				exit 1
 			fi
 			DEF_UNIT="${1}"
@@ -147,7 +167,7 @@ while [ ${#} -gt 0 ]; do
 		-n)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -n requires an argument."
+				log "err" "Usage: -n requires an argument."
 				exit 1
 			fi
 			DEF_CN="${1}"
@@ -156,7 +176,7 @@ while [ ${#} -gt 0 ]; do
 		-e)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -e requires an argument."
+				log "err" "Usage: -e requires an argument."
 				exit 1
 			fi
 			DEF_EMAIL="${1}"
@@ -165,7 +185,7 @@ while [ ${#} -gt 0 ]; do
 		-a)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -a requires an argument."
+				log "err" "Usage: -a requires an argument."
 				exit 1
 			fi
 			DEF_ALT_NAME="${1}"
@@ -174,7 +194,7 @@ while [ ${#} -gt 0 ]; do
 		-i)
 			shift
 			if [ -z "${1:-}" ]; then
-				>&2 echo "${NAME}: Error: -i requires an argument."
+				log "err" "Usage: -i requires an argument."
 				exit 1
 			fi
 			DEF_ALT_IP_NAME="${1}"
@@ -186,7 +206,7 @@ while [ ${#} -gt 0 ]; do
 			break
 			;;
 		-*) # Unknown option
-			>&2 echo "${NAME}: Error: Unknown option: ${1}"
+			log "err" "Usage: Unknown option: ${1}"
 			exit 1
 			;;
 		*)  # No more options
@@ -201,12 +221,12 @@ done
 ################################################################################
 
 if [ -z "${DEF_CN}" ]; then
-	>&2 echo "${NAME}: Error: -n is required. See --help for help."
+	log "err" "Usage: -n is required. See --help for help."
 	exit 1
 fi
 
 if [ "${#}" -lt "5" ]; then
-	>&2 echo "${NAME}: Error: <ca-key> <ca-crt> <key> <csr> and <crt> are required. See --help for help."
+	log "err" "Usage: <ca-key> <ca-crt> <key> <csr> and <crt> are required. See --help for help."
 	exit 1
 fi
 
@@ -217,11 +237,11 @@ CSR_FILE="${4}"
 CRT_FILE="${5}"
 
 if [ ! -f "${CA_KEY_FILE}" ]; then
-	>&2 echo "${NAME}: Error: <ca-key> file does not exist in: ${CA_KEY_FILE}"
+	log "err" "Usage: <ca-key> file does not exist in: ${CA_KEY_FILE}"
 	exit 1
 fi
 if [ ! -f "${CA_CRT_FILE}" ]; then
-	>&2 echo "${NAME}: Error: <ca-crt> file does not exist in: ${CA_CRT_FILE}"
+	log "err" "Usage: <ca-crt> file does not exist in: ${CA_CRT_FILE}"
 	exit 1
 fi
 
@@ -313,17 +333,12 @@ cmd="openssl req \
 # Trim newlines/whitespaces
 cmd="$( echo "${cmd}" | tr -s " " )"
 
-# Debug
-if [ "${DEF_VERBOSE}" = "1" ]; then
-	echo "\$ ${cmd}"
-fi
 
 # Execute
+log "info" "Create CSR file: ${CSR_FILE}"
 if ! out="$( eval "${cmd}" 2>&1 )"; then
-	if [ -z "${DEF_VERBOSE}" ]; then
-		echo "\$ ${cmd}"
-	fi
-	>&2 echo "${out}"
+	log "err" "Command: ${cmd}"
+	log "err" "Output: ${out}"
 	exit 1
 fi
 
@@ -349,17 +364,12 @@ cmd="openssl x509 \
 # Trim newlines/whitespaces
 cmd="$( echo "${cmd}" | tr -s " " )"
 
-# Debug
-if [ "${DEF_VERBOSE}" = "1" ]; then
-	echo "\$ ${cmd}"
-fi
 
 # Execute
+log "info" "Create CRT file: ${CRT_FILE}"
 if ! out="$( eval "${cmd}" 2>&1 )"; then
-	if [ -z "${DEF_VERBOSE}" ]; then
-		echo "\$ ${cmd}"
-	fi
-	>&2 echo "${out}"
+	log "err" "Command: ${cmd}"
+	log "err" "Output: ${out}"
 	exit 1
 fi
 
@@ -367,18 +377,14 @@ fi
 ###
 ### 4. Validate
 ###
+log "info" "Verify CRT file: ${CRT_FILE}"
 if ! out="$( openssl x509 -in "${CRT_FILE}" -text -noout )"; then
-	echo "${out}"
+	log "err" "CRT verification failed: ${out}"
 	exit 1
-fi
-if [ "${DEF_VERBOSE}" = "1" ]; then
-	echo "${out}"
 fi
 
+log "info" "Verify CRT against CA file: ${CA_CRT_FILE}"
 if ! out="$( openssl verify -verbose -CAfile "${CA_CRT_FILE}" "${CRT_FILE}" )"; then
-	echo "${out}"
+	log "err" "CA verification failed: ${out}"
 	exit 1
-fi
-if [ "${DEF_VERBOSE}" = "1" ]; then
-	echo "${out}"
 fi
