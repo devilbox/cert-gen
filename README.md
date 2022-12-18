@@ -1,7 +1,7 @@
 # cert-gen
 
 [![Build Status](https://travis-ci.org/devilbox/cert-gen.svg?branch=master)](https://travis-ci.org/devilbox/cert-gen)
-[![Join the chat at https://gitter.im/devilbox/Lobby](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Discord](https://img.shields.io/discord/1051541389256704091?color=8c9eff&label=Discord&logo=discord)](https://discord.gg/2wP3V6kBj4)
 ![Tag](https://img.shields.io/github/tag/devilbox/cert-gen.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -295,4 +295,6 @@ Certificate:
 
 ## License
 
-[MIT License](LICENSE.md)
+**[MIT License](LICENSE.md)**
+
+Copyright (c) 2018 [cytopia](https://github.com/cytopia)
